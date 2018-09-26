@@ -220,16 +220,16 @@
         cancelButtonText: "NO, cancelar!",
         closeOnConfirm: false,
         closeOnCancel: true
-      }, function(isConfirm) {
+      },function(isConfirm) {
         if (isConfirm) {
           // llamar ajax para borrar
           $.ajax({
             type:"POST",
             data:"cod=" + cod,
-            url:"ajax/eliminarRole.php",
+            url:"ajax/eliminarProveedor.php",
             success:function(r){
               if(r==1){
-                $('#divDataTable').load('inc/tablaRole.php');
+                $('#divDataTable').load('inc/tablaProveedor.php');
                 swal("Borrado!", "El Registro fue Eliminado.", "success");
               }else{
                 swal("Error de Borrado!", "Hubo un problema con la Conexion.", "error");
