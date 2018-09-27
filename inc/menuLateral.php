@@ -26,6 +26,7 @@ if($result->rowCount() == 1){
     <li><a class="app-menu__item active" href="gerenteConsole.html"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
     <li><a class="app-menu__item" href="usuario.php"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Usuarios</span></a></li>
     <li><a class="app-menu__item" href="proveedor.php"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Proveedores</span></a></li>
+    <li><a class="app-menu__item" href="producto.php"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Productos</span></a></li>
     <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-laptop"></i><span class="app-menu__label">Cotizaciones</span><i class="treeview-indicator fa fa-angle-right"></i></a>
       <ul class="treeview-menu">
         <li><a class="treeview-item" href="nuevaCotizacion.php"><i class="icon fa fa-circle-o"></i> Nueva Cotizacion</a></li>
