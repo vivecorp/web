@@ -12,6 +12,9 @@
   <?php require "inc/headerUploader.php" ?>
 </head>
 <body class="app sidebar-mini rtl">
+  <div id="loading-screen" >
+    <img src="images/spinning-circles.svg" >
+  </div>
   <!-- Navbar-->
   <!-- Navbar Logo, Barra superior donde se tiene las notificaciones el buscador el boton de menu etc-->
   <?php require "inc/navbar.php"; ?>
@@ -41,6 +44,7 @@
               Agregar Nuevo <span class="fa fa-plus-circle"></span>
             </span>
             <hr>
+
             <!-- div donde se cargara el data table -->
             <div id="divDataTable">
             </div>
@@ -92,7 +96,8 @@
           <label>Linea Empresa</label>
           <input type="text" class="form-control input-sm" id="txtLineaEmpresaA" name="txtLineaEmpresaA" required>
           <label>Logo</label>
-          <input type="text" class="form-control input-sm" id="txtLogoA" name="txtLogoA">
+          <div id="divLogoAntiguo"></div>
+          <input id="fileLogoA" name="fileLogoA" multiple="false" type="file">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -145,7 +150,26 @@
   <!-- llamar a la data table de usuarios -->
   <script type="text/javascript">
     $(document).ready(function(){
+      // loader Inicio
+      var screen = $('#loading-screen');
+      configureLoadingScreen(screen);
+      // uploader java
       $("#fileLogo").fileinput({
+        // uploadUrl: "/file-upload-batch/1",
+        // uploadAsync: false,
+        overwriteInitial: true,
+        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        // overwriteInitial: false,
+        // maxFileSize: 1000,
+        // maxFilesNum: 1,
+        allowedFileTypes: ['image'],
+        // slugCallback: function(filename) {
+        //   return filename.replace('(', '_').replace(']', '_');
+        // }
+        showUpload: false,
+        showCancel: false
+      });
+      $("#fileLogoA").fileinput({
         // uploadUrl: "/file-upload-batch/1",
         // uploadAsync: false,
         overwriteInitial: true,
@@ -203,33 +227,40 @@
        //ajax actualizar
        $(document).on("submit","#wfrActualizar",function(event){
         event.preventDefault();
-        datos=$('#wfrActualizar').serialize();
+        var f = $(this);
+        var formData = new FormData(document.getElementById("wfrActualizar"));
+        formData.append("dato", "valor");
         $.ajax({
+          url:"ajax/actualizarLineaEmpresa.php",
           type:"POST",
-          data:datos,
-          url:"ajax/actualizarProveedor.php",
-          success:function(r){
-            if(r==1){
-              $('#modalEditar').modal('hide');
-              swal({
-                title: "Actualizar Proveedor",
-                text: "Registro Exitoso!",
-                icon: "success"
-              });
-              $('#divDataTable').load('inc/tablaProveedor.php');
-            }else{
-              swal({
-                 title: "Actualizar Proveedor",
-                 text: "Error en Registrar!",
-                 icon: "error"
-              });
-            }
+          dataType: "html",
+          data: formData,
+          cache: false,
+          contentType: false,
+	        processData: false
+        })
+        .done(function(r){
+          if(r==1){
+            $('#modalEditar').modal('hide');
+            swal({
+              title: "Actualizar Linea Empresarial",
+              text: "Registro Exitoso!",
+              icon: "success"
+            });
+            $('#divDataTable').load('inc/tablaLineaEmpresa.php');
+          }else{
+            swal({
+               title: "Actualizar Linea Empresarial",
+               text: "Error en Registrar!",
+               icon: "error"
+            });
           }
         });
-        });
-
 
       });
+    });
+
+
   </script>
   <script type="text/javascript">
     // funcion borrar
@@ -270,21 +301,27 @@
       $.ajax({
         type:"POST",
         data:"cod=" + cod,
-        url:"ajax/obtenDatosProveedor.php",
+        url:"ajax/obtenDatosLineaEmpresa.php",
         success:function(r){
           datos=jQuery.parseJSON(r);
-          $('#hdeCodProveedorA').val(datos['codProveedor']);
-          $('#txtEmpresaA').val(datos['empresa']);
-          $('#cmbPaisA').val(datos['pais']);
-          $('#txtContactoA').val(datos['contacto']);
-          $('#txtEmailA').val(datos['email']);
-          $('#txtTelefonoA').val(datos['tel']);
-          $('#txtCelularA').val(datos['cel']);
-          $('#txtDireccionA').val(datos['direccion']);
+          $('#hdeCodLineaEmpresaA').val(datos['codLineaEmpresa']);
+          $('#txtLineaEmpresaA').val(datos['linea']);
+          $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/"+datos['logo']+"' >");
+          // $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/1logo.jpg' >");
         }
       });
 
       $('#modalEditar').modal('show');
+    }
+    // loader
+    function configureLoadingScreen(screen){
+      $(document)
+        .ajaxStart(function () {
+          screen.fadeIn();
+        })
+        .ajaxStop(function () {
+          screen.fadeOut();
+        });
     }
   </script>
 </body>

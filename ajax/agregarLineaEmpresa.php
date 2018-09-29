@@ -24,7 +24,8 @@ $fotoO=$_FILES['fileLogo']['name'];
 	$fotoO=$codO.$fotoO;
 	if ($_FILES['fileLogo']["error"] > 0)
 	{
-	  echo "Error: " . $_FILES['fileLogo']['error'] . "<br>";
+	  echo "Error de subida: " . $_FILES['fileLogo']['error'];
+		return false;
 	}
 	else
 	{

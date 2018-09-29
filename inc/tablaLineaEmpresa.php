@@ -22,7 +22,7 @@
       echo "<tr>
               <td>$row[0]</td>
               <td>$row[1]</td>
-              <td><img class='img-fluid' src='logos/$row[2]' ></td>
+              <td><img style='max-width: 80px ' class='img-fluid' src='logos/$row[2]' ></td>
               <td>$row[2]</td>
               <td>$row[3]</td>
               <td style='text-align: center;'>
