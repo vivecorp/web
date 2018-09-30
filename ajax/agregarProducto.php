@@ -10,18 +10,19 @@
 		$_POST['cmbActividadEconomica']
 				);
 	// capturar foto
-	$fotoO=$_FILES['fileFoto']['name'];
+	$f='fileFoto';
+	$fotoO=$_FILES[$f]['name'];
 	// logo upload
 	$fotoO=$datos[0]."_".$fotoO;
-	if ($_FILES['fileFoto']["error"] > 0)
+	if ($_FILES[$f]["error"] > 0)
 	{
-	  echo "Error de subida: " . $_FILES['fileFoto']['error'];
+	  echo "Error de subida: " . $_FILES[$f]['error'];
 		return false;
 	}
 	else
 	{
 	  /*ahora co la funcion move_uploaded_file lo guardaremos en el destino que queramos*/
-	  move_uploaded_file($_FILES['fileFoto']['tmp_name'],"../productos/" . $fotoO);
+	  move_uploaded_file($_FILES[$f]['tmp_name'],"../productos/" . $fotoO);
 	}
 		// buscar ultimo codigo de usuario
 		$query="SELECT ifnull(max(codProducto)+1,1) as ult from producto";
