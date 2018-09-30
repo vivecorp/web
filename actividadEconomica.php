@@ -26,25 +26,23 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-user"></i> Producto</h1>
-        <p>Gestion de Productos</p>
+        <h1><i class="fa fa-user"></i>Actividad Economica</h1>
+        <p>Gestion de Actividades Economicas (Impuestos Bolivia)</p>
       </div>
       <ul class="app-breadcrumb breadcrumb side">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
         <li class="breadcrumb-item active"><a href="gerenteConsole.php">Inicio</a></li>
-        <li class="breadcrumb-item">Productos</li>
+        <li class="breadcrumb-item">Actividad Economica</li>
       </ul>
     </div>
     <div class="row">
       <div class="col-md-12">
         <div class="tile">
           <div class="tile-body">
-
             <span class="btn btn-primary" data-toggle="modal" data-target="#modalNuevo">
               Agregar Nuevo <span class="fa fa-plus-circle"></span>
             </span>
             <hr>
-
             <!-- div donde se cargara el data table -->
             <div id="divDataTable">
             </div>
@@ -59,26 +57,16 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Nueva Actividad Economica</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <label>Articulo</label>
-        <input type="text" class="form-control input-sm" id="txtArticulo" name="txtArticulo" required>
-        <label>Descripcion</label>
-        <input type="text" class="form-control input-sm" id="txtDescripcion" name="txtDescripcion" required>
-        <label>Codigo de Barra</label>
-        <input type="text" class="form-control input-sm" id="txtCodigoBarra" name="txtCodigoBarra" >
-        <label>Unidad de Medida</label>
-        <?php require "inc/cmbUnidadMedida.php" ?>
-        <label>Linea Empresarial</label>
-        <?php require "inc/cmbLineaEmpresa.php" ?>
-        <label>Actividad Economica</label>
-        <?php require "inc/cmbActividadEconomica.php" ?>
-        <label>Foto</label>
-        <input id="fileFoto" name="fileFoto" multiple="false" type="file">
+          <label>Codigo Actividad Economica</label>
+          <input type="text" class="form-control input-sm" id="txtCodigo" name="txtCodigo" required>
+          <label>Actividad Economica</label>
+          <input type="text" class="form-control input-sm" id="txtActividadEconomica" name="txtActividadEconomica" required>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -90,31 +78,22 @@
 </form>
 
 <!-- modal para actualizar -->
-<form id="wfrActualizar" enctype="multipart/form-data" method="post">
+<form id="wfrActualizar" name="wfrActualizar" enctype="multipart/form-data" method="post">
 <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Actualizar Producto</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar Actividad Economica</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <label>Articulo</label>
-        <input type="text" class="form-control input-sm" id="txtArticuloA" name="txtArticuloA" required>
-        <label>Descripcion</label>
-        <input type="text" class="form-control input-sm" id="txtDescripcionA" name="txtDescripcionA" required>
-        <label>Codigo de Barra</label>
-        <input type="text" class="form-control input-sm" id="txtCodigoBarraA" name="txtCodigoBarraA" >
-        <label>Unidad de Medida</label>
-        <?php require "inc/cmbUnidadMedida.php" ?>
-        <label>Linea Empresarial</label>
-        <?php require "inc/cmbLineaEmpresa.php" ?>
-        <label>Actividad Economica</label>
-        <?php require "inc/cmbActividadEconomica.php" ?>
-        <label>Foto</label>
-        <input id="fileFotoA" name="fileFotoA" multiple="false" type="file">
+          <input type="hidden" class="form-control input-sm" id="hdeCodActividadEconomicaA" name="hdeCodActividadEconomicaA">
+          <label>Codigo Actividad Economica</label>
+          <input type="text" class="form-control input-sm" id="txtCodigoA" name="txtCodigoA" required>
+          <label>Actividad Economica</label>
+          <input type="text" class="form-control input-sm" id="txtActividadEconomicaA" name="txtActividadEconomicaA" required>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -141,68 +120,14 @@
   <!-- javascript para notificacionse -->
   <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
   <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
-
-  <script>
-
-
-      // $("#foto").fileinput({
-      //   // uploadUrl: 'upload.php', // you must set a valid URL here else you will get an error
-      //   // allowedFileExtensions: ['jpg', 'png', 'gif'],
-      //   // overwriteInitial: false,
-      //   // maxFileSize: 1000,
-      //   // maxFilesNum: 1,
-      //   // allowedFileTypes: ['image'],
-      //   width: '20px',
-      //   resizeImage: true,
-      //   maxImageWidth: 1000,
-      //   maxImageHeight: 1000,
-      //   resizePreference: 'width'
-      //   // slugCallback: function(filename) {
-      //   //   return filename.replace('(', '_').replace(']', '_');
-      //   // }
-      //   // showUpload: false
-      // });
-    </script>
-
   <!-- llamar a la data table de usuarios -->
   <script type="text/javascript">
     $(document).ready(function(){
       // loader Inicio
       var screen = $('#loading-screen');
       configureLoadingScreen(screen);
-      // uploader java
-      $("#fileFoto").fileinput({
-        // uploadUrl: "/file-upload-batch/1",
-        // uploadAsync: false,
-        overwriteInitial: true,
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
-        // overwriteInitial: false,
-        // maxFileSize: 1000,
-        // maxFilesNum: 1,
-        allowedFileTypes: ['image'],
-        // slugCallback: function(filename) {
-        //   return filename.replace('(', '_').replace(']', '_');
-        // }
-        showUpload: false,
-        showCancel: false
-      });
-      $("#fileFotoA").fileinput({
-        // uploadUrl: "/file-upload-batch/1",
-        // uploadAsync: false,
-        overwriteInitial: true,
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
-        // overwriteInitial: false,
-        // maxFileSize: 1000,
-        // maxFilesNum: 1,
-        allowedFileTypes: ['image'],
-        // slugCallback: function(filename) {
-        //   return filename.replace('(', '_').replace(']', '_');
-        // }
-        showUpload: false,
-        showCancel: false
-      });
       // carga del datatable
-      $('#divDataTable').load('inc/tablaProducto.php');
+      $('#divDataTable').load('inc/tablaActividadEconomica.php');
     // llenar por ajax nuevo usuarios
       // $(document).on("submit","#wfrNuevo",function(event){
       $("#wfrNuevo").on("submit", function(event){
@@ -212,7 +137,7 @@
         var formData = new FormData(document.getElementById("wfrNuevo"));
         formData.append("dato", "valor");
         $.ajax({
-          url:"ajax/agregarProducto.php",
+          url:"ajax/agregarActividadEconomica.php",
           type:"POST",
           dataType: "html",
           data: formData,
@@ -224,11 +149,11 @@
           .done(function(r){
             if(r==1){
               $('#wfrNuevo')[0].reset();
-              $('#divDataTable').load('inc/tablaProducto.php');
+              $('#divDataTable').load('inc/tablaActividadEconomica.php');
               $('#modalNuevo').modal('hide');
-              swal("Nuevo Producto", "El Registro fue Exitoso.", "success");
+              swal("Nueva Actividad Economica", "El Registro fue Exitoso.", "success");
             }else{
-              swal("Nuevo Producto", "Error de Registro:"+r, "error");
+              swal("Nueva Actividad Economica", "Error de Registro:"+r, "error");
             }
           });
       });
@@ -240,7 +165,7 @@
         var formData = new FormData(document.getElementById("wfrActualizar"));
         formData.append("dato", "valor");
         $.ajax({
-          url:"ajax/actualizarLineaEmpresa.php",
+          url:"ajax/actualizarActividadEconomica.php",
           type:"POST",
           dataType: "html",
           data: formData,
@@ -251,21 +176,12 @@
         .done(function(r){
           if(r==1){
             $('#modalEditar').modal('hide');
-            swal({
-              title: "Actualizar Linea Empresarial",
-              text: "Registro Exitoso!",
-              icon: "success"
-            });
-            $('#divDataTable').load('inc/tablaLineaEmpresa.php');
+            swal("Actualizar Actividad Economica", "El Registro fue Actualizado.", "success");
+            $('#divDataTable').load('inc/tablaActividadEconomica.php');
           }else{
-            swal({
-               title: "Actualizar Linea Empresarial",
-               text: "Error en Registrar!",
-               icon: "error"
-            });
+            swal("Actualizar Actividad Economica", "Error"+r, "error");
           }
         });
-
       });
     });
 
@@ -290,10 +206,10 @@
           $.ajax({
             type:"POST",
             data:"cod=" + cod,
-            url:"ajax/eliminarLineaEmpresa.php",
+            url:"ajax/eliminarActividadEconomica.php",
             success:function(r){
               if(r==1){
-                $('#divDataTable').load('inc/tablaLineaEmpresa.php');
+                $('#divDataTable').load('inc/tablaActividadEconomica.php');
                 swal("Borrado!", "El Registro fue Eliminado.", "success");
               }else{
                 swal("Error de Borrado!", "Hubo un problema con la Conexion.", "error");
@@ -310,13 +226,12 @@
       $.ajax({
         type:"POST",
         data:"cod=" + cod,
-        url:"ajax/obtenDatosLineaEmpresa.php",
+        url:"ajax/obtenDatosActividadEconomica.php",
         success:function(r){
           datos=jQuery.parseJSON(r);
-          $('#hdeCodLineaEmpresaA').val(datos['codLineaEmpresa']);
-          $('#txtLineaEmpresaA').val(datos['linea']);
-          $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/"+datos['logo']+"' >");
-          // $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/1logo.jpg' >");
+          $('#hdeCodActividadEconomicaA').val(datos['codActividadEconomica']);
+          $('#txtCodigoA').val(datos['codigo']);
+          $('#txtActividadEconomicaA').val(datos['descripcion']);
         }
       });
 
