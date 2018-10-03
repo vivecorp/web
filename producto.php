@@ -101,6 +101,7 @@
         </button>
       </div>
       <div class="modal-body">
+        <input type="hidden" class="form-control input-sm" id="hdeCodProductoA" name="hdeCodProductoA">
         <label>Articulo</label>
         <input type="text" class="form-control input-sm" id="txtArticuloA" name="txtArticuloA" required>
         <label>Descripcion</label>
@@ -108,12 +109,13 @@
         <label>Codigo de Barra</label>
         <input type="text" class="form-control input-sm" id="txtCodigoBarraA" name="txtCodigoBarraA" >
         <label>Unidad de Medida</label>
-        <?php require "inc/cmbUnidadMedida.php" ?>
+        <?php require "inc/cmbUnidadMedidaA.php" ?>
         <label>Linea Empresarial</label>
-        <?php require "inc/cmbLineaEmpresa.php" ?>
+        <?php require "inc/cmbLineaEmpresaA.php" ?>
         <label>Actividad Economica</label>
-        <?php require "inc/cmbActividadEconomica.php" ?>
+        <?php require "inc/cmbActividadEconomicaA.php" ?>
         <label>Foto</label>
+        <div id="divFotoAntiguo"></div>
         <input id="fileFotoA" name="fileFotoA" multiple="false" type="file">
       </div>
       <div class="modal-footer">
@@ -240,7 +242,7 @@
         var formData = new FormData(document.getElementById("wfrActualizar"));
         formData.append("dato", "valor");
         $.ajax({
-          url:"ajax/actualizarLineaEmpresa.php",
+          url:"ajax/actualizarProducto.php",
           type:"POST",
           dataType: "html",
           data: formData,
@@ -251,18 +253,10 @@
         .done(function(r){
           if(r==1){
             $('#modalEditar').modal('hide');
-            swal({
-              title: "Actualizar Linea Empresarial",
-              text: "Registro Exitoso!",
-              icon: "success"
-            });
-            $('#divDataTable').load('inc/tablaLineaEmpresa.php');
+            swal("Actualizar Producto", "El Registro fue Exitoso.", "success");
+            $('#divDataTable').load('inc/tablaProducto.php');
           }else{
-            swal({
-               title: "Actualizar Linea Empresarial",
-               text: "Error en Registrar!",
-               icon: "error"
-            });
+            swal("Actualizar Producto", "Error de Registro:"+r, "error");
           }
         });
 
@@ -290,10 +284,10 @@
           $.ajax({
             type:"POST",
             data:"cod=" + cod,
-            url:"ajax/eliminarLineaEmpresa.php",
+            url:"ajax/eliminarProducto.php",
             success:function(r){
               if(r==1){
-                $('#divDataTable').load('inc/tablaLineaEmpresa.php');
+                $('#divDataTable').load('inc/tablaProducto.php');
                 swal("Borrado!", "El Registro fue Eliminado.", "success");
               }else{
                 swal("Error de Borrado!", "Hubo un problema con la Conexion.", "error");
@@ -310,12 +304,17 @@
       $.ajax({
         type:"POST",
         data:"cod=" + cod,
-        url:"ajax/obtenDatosLineaEmpresa.php",
+        url:"ajax/obtenDatosProducto.php",
         success:function(r){
           datos=jQuery.parseJSON(r);
-          $('#hdeCodLineaEmpresaA').val(datos['codLineaEmpresa']);
-          $('#txtLineaEmpresaA').val(datos['linea']);
-          $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/"+datos['logo']+"' >");
+          $('#hdeCodProductoA').val(datos['codProducto']);
+          $('#txtArticuloA').val(datos['articulo']);
+          $('#txtDescripcionA').val(datos['descripcion']);
+          $('#txtCodigoBarraA').val(datos['codigoBarra']);
+          $('#cmbUnidadMedidaA').val(datos['codUnidadMedida']);
+          $('#cmbLineaEmpresaA').val(datos['codLineaEmpresa']);
+          $('#cmbActividadEconomicaA').val(datos['codActividadEconomica']);
+          $('#divFotoAntiguo').html("<img class='img-fluid' src='productos/"+datos['foto']+"' >");
           // $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/1logo.jpg' >");
         }
       });

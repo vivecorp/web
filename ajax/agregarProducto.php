@@ -11,9 +11,9 @@
 				);
 	// capturar foto
 	$f='fileFoto';
-	$fotoO=$_FILES[$f]['name'];
+	// $fotoO=$_FILES[$f]['name'];
 	// logo upload
-	$fotoO=$datos[0]."_".$fotoO;
+	$fotoO=$datos[0].".".pathinfo($_FILES[$f]['name'], PATHINFO_EXTENSION);
 	if ($_FILES[$f]["error"] > 0)
 	{
 	  echo "Error de subida: " . $_FILES[$f]['error'];
