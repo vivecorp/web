@@ -51,7 +51,7 @@
 <head>
   <?php require "inc/headerUploader.php" ?>
 </head>
-<body class="app sidebar-mini rtl">
+<body class="app sidebar-mini rtl" onload="imprimir()">
   <!-- Navbar-->
   <!-- Navbar Logo, Barra superior donde se tiene las notificaciones el buscador el boton de menu etc-->
   <?php require "inc/navbar.php"; ?>
@@ -125,6 +125,15 @@
     {
       location.href = "compras.php";
     }
+
+    function imprimir()
+		{
+
+				var cod="<?php echo $codCompras; ?>";
+				//window.open("impresionVentas.php");
+        alert("Se Realizara la Impresion de la Orden de Compra");
+				window.open("impresionOrdenCompraPdf.php?codCompras="+cod);
+		}
   </script>
 </body>
 </html>
