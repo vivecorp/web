@@ -137,7 +137,7 @@
     {
       co="<input type='hidden' id='hdeP' name='hdeP[]' value='"+cod+"' >"
       c="<input type='number' onkeyup='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' name='txtC[]'>";
-      p="<input type='number' onkeyup='calcular("+cod+")' required class='form-control' id='txtP"+cod+"' name='txtP[]'>";
+      p="<input type='number' onkeyup='calcular("+cod+")' required step='any' class='form-control' id='txtP"+cod+"' name='txtP[]'>";
       d="<input type='number' onkeyup='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' required value='0'>";
       s="<input type='number' readonly class='form-control' id='txtS"+cod+"' name='txtS[]' >";
       b="<span class='btn btn-danger btn-sm' onclick='borrarFila("+cod+")'><span class='fa fa fa-trash'></span></span>";

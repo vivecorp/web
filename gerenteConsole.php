@@ -9,7 +9,7 @@ if(!$_SESSION['codUsuarioG'] || $_SESSION['role'] =! 1)
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <?php require "inc/header.php"; ?>
+    <?php require "inc/headerUploader.php" ?>
   </head>
   <body class="app sidebar-mini rtl">
     <!-- Navbar Logo, Barra superior donde se tiene las notificaciones el buscador el boton de menu etc-->
@@ -72,12 +72,22 @@ if(!$_SESSION['codUsuarioG'] || $_SESSION['role'] =! 1)
       <!-- linea para graficos final -->
     </main>
     <!-- Essential javascripts for application to work-->
+    <!-- Essential javascripts for application to work-->
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+    <!-- script para funcionar el select con busquedas -->
+    <script type="text/javascript" src="js/plugins/select2.min.js"></script>
     <!-- The javascript plugin to display page loading on top-->
     <script src="js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    <!-- Data table plugin-->
+    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+    <!-- javascript para notificacionse -->
+    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+    <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
     <!-- Page specific javascripts-->
     <script type="text/javascript" src="js/plugins/chart.js"></script>
     <script type="text/javascript">
@@ -129,7 +139,11 @@ if(!$_SESSION['codUsuarioG'] || $_SESSION['role'] =! 1)
     </script>
     <!-- Google analytics script-->
     <script type="text/javascript">
-      
+      $(document).ready(function(){
+        $('#divCuentasPagar').load('inc/tablaComprasPendientePagoConsole.php');
+        $('#divPendienteAlmacen').load('inc/tablaComprasPendienteIngresoConsole.php');
+
+      })
     </script>
   </body>
 </html>
