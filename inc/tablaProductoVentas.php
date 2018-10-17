@@ -1,22 +1,23 @@
 <?php
   require_once "config.php";
 ?>
-<table class="table table-hover table-condensed table-bordered" id="dataTable">
+<table class="table table-hover table-condensed table-bordered" id="dataTable" style="font-size: 12px;">
   <thead>
     <tr>
-      <th>Articulo</th>
-      <th>Descripcion</th>
+      <th>Art.</th>
+      <th>Producto</th>
       <th>C.Barra</th>
       <th>Foto</th>
-      <th>U.Medida</th>
+      <th>Unidad</th>
       <th>L.Empresa</th>
       <th>A.Economica</th>
     </tr>
   </thead>
   <tbody>
   <?php
+    // obtener los productos 
     $query="select p.codProducto, p.articulo, p.descripcion,
-                  p.codigoBarra, p.foto, p.estado, u.unidad,
+                  p.codigoBarra, p.foto, p.estado, u.sigla,
                   l.linea, l.logo, a.descripcion
                   from producto p, unidadmedida u, lineaempresa l, actividadeconomica a
                   where p.codUnidadMedida=u.codUnidadMedida and
@@ -30,9 +31,9 @@
               <td>$row[1]</td>
               <td>$row[2]</td>
               <td>$row[3]</td>
-              <td><img style='max-width: 60px ' class='img-fluid' src='productos/$row[4]' ></td>
+              <td><img style='max-width: 40px ' class='img-fluid' src='productos/$row[4]' ></td>
               <td>$row[6]</td>
-              <td><img style='max-width: 60px ' class='img-fluid' src='logos/$row[8]' ></td>
+              <td><img style='max-width: 40px ' class='img-fluid' src='logos/$row[8]' ></td>
               <td>$row[9]</td>
             </tr>";
     }

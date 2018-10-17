@@ -1,4 +1,43 @@
 <?php
+
+function obtenerAsignacionLinea($usuario)
+{
+  require "config.php";
+  $query="SELECT  l.linea as linea, l.logo as logo
+          from lineaempresa l, asignacionlinea asi
+          where asi.codUsuario=$usuario and
+	              asi.codLineaEmpresa=l.codLineaEmpresa and
+	              asi.estado=1";
+  $result=$con->query($query);
+  if($result->rowCount() == 1){
+    // existe
+    $row=$result->fetch(PDO::FETCH_NUM);
+    $codO=array($row[0],$row[1]);
+  }else{
+    echo "No se encontro ningun registro";
+    return false;
+  }
+  return $codO;
+}
+function obtenerAsignacionAlmacen($usuario)
+{
+  require "config.php";
+  $query="SELECT a.almacen as almacen
+          from asignacionalmacen asi, almacen a
+          where asi.codUsuario=$usuario and
+	              asi.codAlmacen=a.codAlmacen and
+	              asi.estado=1";
+  $result=$con->query($query);
+  if($result->rowCount() == 1){
+    // existe
+    $row=$result->fetch(PDO::FETCH_NUM);
+    $codO=$row[0];
+  }else{
+    echo "No se encontro ningun registro";
+    return false;
+  }
+  return $codO;
+}
 function obtenerUltimo($tabla,$codigo)
 {
   require "config.php";
