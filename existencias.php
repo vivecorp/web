@@ -90,29 +90,29 @@
 
 <!-- modal para ver existencias en almacenes-->
 <div class="modal fade" id="modalVer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Existencias por Almacen</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <img id="imgFotoA" src="" width="40">  <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <label><h5>Articulo: </h5></label>
-      <label><h5><div id="divArticulo"></div></h5></label>
-      <br>
-      <label><h5>Producto: </h5></label>
-      <label><h5><div id="divProducto"></div></h5></label>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Existencias por Almacen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <img id="imgFotoA" src="" width="40">  <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label><h5>Articulo: </h5></label>
+        <label><h5><div id="divArticulo"></div></h5></label>
+        <br>
+        <label><h5>Producto: </h5></label>
+        <label><h5><div id="divProducto"></div></h5></label>
 
-      <div id="divAlmacen"></div>
-    </div>
-    <div class="modal-footer">
-      <h5><div id="divCantidad"></div></h5>
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <div id="divAlmacen"></div>
+      </div>
+      <div class="modal-footer">
+        <h5><div id="divCantidad"></div></h5>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
     </div>
   </div>
-</div>
 </div>
 
 
@@ -176,6 +176,7 @@
       $('#divCantidad').text("Total: "+cantidad);
       $('#modalVer').modal('show');
     }
+    
     function configureLoadingScreen(screen){
       $(document)
         .ajaxStart(function () {

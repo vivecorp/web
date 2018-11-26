@@ -57,7 +57,7 @@ $(document).ready(function(){
     searching: true,
     info: true,
     paging: true,
-    scrollY: 410,
+    scrollY: 110,
     "scrollX": true,
     "language": {
       "lengthMe nu": "Mostrar _MENU_ Registros por Pagina",

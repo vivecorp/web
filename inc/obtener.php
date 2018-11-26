@@ -3,7 +3,7 @@
 function obtenerAsignacionLinea($usuario)
 {
   require "config.php";
-  $query="SELECT  l.linea as linea, l.logo as logo
+  $query="SELECT  l.linea as linea, l.logo as logo, l.codLineaEmpresa as codLineaEmpresa
           from lineaempresa l, asignacionlinea asi
           where asi.codUsuario=$usuario and
 	              asi.codLineaEmpresa=l.codLineaEmpresa and
@@ -12,7 +12,7 @@ function obtenerAsignacionLinea($usuario)
   if($result->rowCount() == 1){
     // existe
     $row=$result->fetch(PDO::FETCH_NUM);
-    $codO=array($row[0],$row[1]);
+    $codO=array($row[0],$row[1],$row[2]);
   }else{
     echo "No se encontro ningun registro";
     return false;
@@ -22,7 +22,7 @@ function obtenerAsignacionLinea($usuario)
 function obtenerAsignacionAlmacen($usuario)
 {
   require "config.php";
-  $query="SELECT a.almacen as almacen
+  $query="SELECT a.almacen as almacen, a.codAlmacen as codAlmacen
           from asignacionalmacen asi, almacen a
           where asi.codUsuario=$usuario and
 	              asi.codAlmacen=a.codAlmacen and
@@ -31,7 +31,8 @@ function obtenerAsignacionAlmacen($usuario)
   if($result->rowCount() == 1){
     // existe
     $row=$result->fetch(PDO::FETCH_NUM);
-    $codO=$row[0];
+    $codO=array($row[0],$row[1]);
+
   }else{
     echo "No se encontro ningun registro";
     return false;
