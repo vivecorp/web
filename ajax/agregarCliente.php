@@ -43,8 +43,9 @@
 												$datos[11],
 												$datos[12]
 											)";
-			
-			echo $buscarU=$con->exec($sql);
+
+			$row= array(id => $buscarU=$con->exec($sql), codClienteJ => $codO);
+			echo json_encode($row);
 
 			// echo $obj->agregarUsuario($datos);
  ?>

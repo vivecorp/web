@@ -57,7 +57,7 @@
             </button>
             <button type="button" class="btn btn-info btn-sm fa fa fa-search">
             </button>
-            <div id="divCliente"> <?php echo obtenerCombo('cliente','codCliente','nombre'); ?> </div>
+            <div id="divCliente"> <?php require "inc/cmbCliente.php"; ?> </div>
             <label>Razon Social</label>
             <input type="text" class="form-control input-sm"  id="txtRazonSocial" name="txtRazonSocial" value="" >
             <label>NIT</label>
@@ -197,6 +197,7 @@
   <script type="text/javascript">
     $('#cmbcliente').select2();
     $(document).ready(function(){
+
       // nuevo Cliente
       $("#wfrNuevoCliente").on("submit", function(event){
         event.preventDefault();
@@ -215,9 +216,13 @@
         })
           // data:datos,
           .done(function(r){
-            if(r==1){
+            datos=jQuery.parseJSON(r);
+            id=datos['id'];
+            if(id==1){
               $('#wfrNuevoCliente')[0].reset();
-              $('#divCliente').load('inc/cmbCliente.php?codClienteG=');
+              codigoC=datos['codClienteJ'];
+              // codigoC=7;
+              $('#divCliente').load('inc/cmbCliente.php?codClienteG='+codigoC);
               $('#modalNuevoCliente').modal('hide');
               swal({
                 title: "Nuevo Cliente",
@@ -226,7 +231,7 @@
               });
             }else{
               swal({
-                title: "Nuevo Cliente",
+                title: "Nuevo Cliente Error",
                 text: r,
                 icon: "error"
               });
@@ -234,6 +239,7 @@
           });
       });
       // nuevo cliente fin
+
       // verificar asignacion de linea empresarial
       lineaO="<?php echo $linea[0]; ?>";
       logoO="<?php echo $linea[1]; ?>";
@@ -453,6 +459,21 @@
         .ajaxStop(function () {
           screen.fadeOut();
         });
+    }
+    function obtenerNit()
+    {
+      codCliente=$('#cmbcliente').val();
+      $.ajax({
+        type:"POST",
+        data:"cod=" + codCliente,
+        url:"ajax/obtenDatosCliente.php",
+        success:function(r){
+          datos=jQuery.parseJSON(r);
+          $('#txtRazonSocial').val(datos['razonSocial']);
+          $('#txtNit').val(datos['nit']);
+          // $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/1logo.jpg' >");
+        }
+      });
     }
 
   </script>
