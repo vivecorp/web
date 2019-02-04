@@ -57,6 +57,8 @@
             </button>
             <button type="button" class="btn btn-info btn-sm fa fa fa-search">
             </button>
+            <input type="text" class="form-control input-sm"  id="hdeDescuento" name="hdeDescuento" value="" >
+
             <div id="divCliente"> <?php require "inc/cmbCliente.php"; ?> </div>
             <label>Razon Social</label>
             <input type="text" class="form-control input-sm"  id="txtRazonSocial" name="txtRazonSocial" value="" >
@@ -96,11 +98,39 @@
       <div class="col-md-12">
         <div class="tile">
           <div class="tile-body">
-            <p align='center'><button type="submit" class="btn btn-primary" id="btnRegistrar">Registrar</button></p>
+            <p align='center'><button type="button" class="btn btn-primary" id="btnRegistrar">Registrar</button></p>
           </div>
         </div>
       </div>
     </div>
+    <!-- modal de tipo de pago efectivo deposito cheque tarjeta de credito transferencia en el exterior   -->
+    <!-- modal para ver existencias en almacenes-->
+    <div class="modal fade" id="modalTipoPago" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">VENTA AL CONTADO</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <label><h1>TOTAL (Bs)</h1></label>
+            <br>
+            <label>Tipo de Pago</label>
+            <?php echo obtenerCombo('tipopago','codTipoPago','tipoPago'); ?>
+          </div>
+          <div class="modal-footer">
+            <h5><div id="divCantidad"></div></h5>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary" id="btnRegistrarModal" name="btnRegistrarModal">Registrar</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- fin modal tipo pago -->
+
     </form>
   </main>
 </div>
@@ -131,6 +161,9 @@
     </div>
   </div>
 </div>
+
+
+
 <!-- crear modal para nuevo cliente -->
 <form id="wfrNuevoCliente" name="wfrNuevoCliente"  method="post" enctype="multipart/form-data">
 <div class="modal fade" id="modalNuevoCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -223,6 +256,9 @@
               codigoC=datos['codClienteJ'];
               // codigoC=7;
               $('#divCliente').load('inc/cmbCliente.php?codClienteG='+codigoC);
+              // capturar datos de plazo descuentos y credito
+              $('#txtPlazo').val(datos['plazo']);
+              $('#hdeDescuento').val(datos['descuento']);
               $('#modalNuevoCliente').modal('hide');
               swal({
                 title: "Nuevo Cliente",
@@ -298,6 +334,8 @@
         }
         if(v=="2")
         {
+          codC=$("#cmbcliente").val();
+          // alert(codC);
           $('#labelPlazo').show();
           $('#txtPlazo').show();
         }
@@ -309,14 +347,40 @@
       $('#divDataTable').load('inc/tablaProductoVentas.php?codLinea='+codLineaO+'&codAlmacen='+codAlmacenO);
       // carga datatable detalle
       $('#divDataDetalle').load('inc/tablaDetalleVentas.php');
-    // llenar por ajax nuevo usuarios
-      $("#wfrNuevo").submit(function() {
+
+
+      $(document).on('click', '#btnRegistrar', function(event) {
+      // $( "#wfrNuevo" ).submit(function( event ) {
+        // event.preventDefault();
         if (cont==0) {
           swal("Error al Registrar!", "Necesita Seleccionar un Producto.", "error");
-          return false;
-        } else
-          return true;
+        } else{
+          aux=0;
+          $("#dataTableDetalle tbody tr").each(function(){
+            co = $(this).find("td:eq(0)").text();
+            elemento=document.getElementById('txtC'+co);
+            if(!elemento.checkValidity())
+            {
+              aux=1;
+            }
+          });
+          if(aux==0)
+          {
+            $('#modalTipoPago').modal('show');
+          }
+          else {
+            swal("Error al Registrar!", "Necesita Ingresar la Cantidad", "error");
+          }
+
+        }
       });
+
+      // intentar hacer submit
+      // $( "#btnRegistrarModal" ).click(function() {
+      //   alert("jiji");
+      //   $( "#wfrNuevo" ).submit();
+      // });
+
     });
   </script>
   <script type="text/javascript">
@@ -325,11 +389,12 @@
     var band=0;
     function detalleCompras(cod,articulo,descripcion,foto,unidad,cantidadD,precioV)
     {
+      descC=$("#hdeDescuento").val();
       co="<input type='hidden' id='hdeP' name='hdeP[]' value='"+cod+"' >"
       cantidadAlmacen="<input type='hidden' id='hdeCA"+cod+"' name='hdeCA[]' value='"+cantidadD+"' >"
       c="<input type='number' onkeyup='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' name='txtC[]'>";
       p="<input type='number' onkeyup='calcular("+cod+")' required step='any' class='form-control' id='txtP"+cod+"' name='txtP[]' value='"+precioV+"' readonly>";
-      d="<input type='number' onkeyup='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' required value='0'>";
+      d="<input type='number' onkeyup='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' value='"+descC+"'>";
       s="<input type='number' readonly class='form-control' id='txtS"+cod+"' name='txtS[]' >";
       b="<span class='btn btn-danger btn-sm fa fa fa-trash' onclick='borrarFila("+cod+")'></span>";
       fila="<tr id='fila"+cod+"'><td>"+cod+co+"</td><td>"+cantidadD+cantidadAlmacen+"</td><td>"+articulo+"</td><td>"+descripcion+"</td><td><img style='max-width: 40px ' class='img-fluid' src='productos/"+foto+"' ></td><td>"+unidad+"</td><td>"+c+"</td><td>"+p+"</td><td>"+d+"</td><td>"+s+"</td><td>"+b+"</td></tr>";
@@ -471,6 +536,18 @@
           datos=jQuery.parseJSON(r);
           $('#txtRazonSocial').val(datos['razonSocial']);
           $('#txtNit').val(datos['nit']);
+          $('#txtPlazo').val(datos['plazoCredito']);
+          $('#hdeDescuento').val(datos['descuento']);
+          // llenar descuentos despues de elegir productos
+          if(cont>0)
+          {
+            $("#dataTableDetalle tbody tr").each(function(){
+              co = $(this).find("td:eq(0)").text();
+
+              $('#txtD'+co).val(datos['descuento']);
+            });
+          }
+
           // $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/1logo.jpg' >");
         }
       });
