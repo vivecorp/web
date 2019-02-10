@@ -8,6 +8,7 @@
   require "inc/obtener.php";
   $almacenA=obtenerAsignacionAlmacen($_SESSION['codUsuarioG']);
   $almacen=$almacenA[0];
+  $codAlmacenHde=$almacenA[1];
   $linea=obtenerAsignacionLinea($_SESSION['codUsuarioG']);
 ?>
 <!DOCTYPE html>
@@ -39,7 +40,7 @@
         <li class="breadcrumb-item">Ventas</li>
       </ul>
     </div>
-    <form id="wfrNuevo" name="wfrNuevo"  method="post" enctype="multipart/form-data" action="VentasPhp.php">
+    <form id="wfrNuevo" name="wfrNuevo"  method="post" enctype="multipart/form-data" action="ventasPhp.php">
 
     <div class="row">
       <div class="col-md-6">
@@ -48,6 +49,9 @@
 
           <div class="tile-body">
             <!-- div donde se cargara el data table -->
+
+            <input type="hidden" class="form-control input-sm" id="hdeAlmacen" name="hdeAlmacen" value="<?php echo $codAlmacenHde; ?>" >
+
             <label>Codigo:</label>
             <input type="text" class="form-control input-sm" readonly id="txtCodVentas" name="txtCodVentas" value="<?php echo obtenerUltimo('ventas','codVentas'); ?>" >
             <label>Fecha</label>
@@ -57,13 +61,13 @@
             </button>
             <button type="button" class="btn btn-info btn-sm fa fa fa-search">
             </button>
-            <input type="text" class="form-control input-sm"  id="hdeDescuento" name="hdeDescuento" value="" >
+            <input type="hidden" class="form-control input-sm"  id="hdeDescuento" name="hdeDescuento" value="" >
 
             <div id="divCliente"> <?php require "inc/cmbCliente.php"; ?> </div>
             <label>Razon Social</label>
-            <input type="text" class="form-control input-sm"  id="txtRazonSocial" name="txtRazonSocial" value="" >
+            <input type="text" class="form-control input-sm"  id="txtRazonSocial" name="txtRazonSocial" value="Consumidor Final" >
             <label>NIT</label>
-            <input type="text" class="form-control input-sm"  id="txtNit" name="txtNit" value="" >
+            <input type="text" class="form-control input-sm"  id="txtNit" name="txtNit" value="99002" >
             <label>Forma de Pago</label>
             <?php echo obtenerCombo('formapago','codFormaPago','formaPago'); ?>
             <label id="labelPlazo">Plazo</label>
@@ -115,13 +119,22 @@
             </button>
           </div>
           <div class="modal-body">
-            <label><h1>TOTAL (Bs)</h1></label>
+            <h1 style="width: 100%; text-align: center;"><div id="divTotalCancelar"  ></div></h1>
             <br>
             <label>Tipo de Pago</label>
             <?php echo obtenerCombo('tipopago','codTipoPago','tipoPago'); ?>
+            <div class="divContTipoPago">
+              <label id="lblPagoEfectivo">Efectivo (Bs)</label>
+              <input type="number" step="any" class="form-control input-sm" id="txtPagoEfectivo" name="txtPagoEfectivo" oninput="calcularCambio()" required>
+              <label id="lblCambio">Cambio (Bs)</label>
+              <input type="number" step="any" class="form-control input-sm" id="txtCambio" name="txtCambio" readonly>
+              <label id="lblBanco">Banco</label>
+              <?php echo obtenerCombo('bancos','codBancos','banco'); ?>
+              <label id="lblComprobante">Comprobante</label>
+              <input type="text" class="form-control input-sm" id="txtComprobante" name="txtComprobante">
+            </div>
           </div>
           <div class="modal-footer">
-            <h5><div id="divCantidad"></div></h5>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-primary" id="btnRegistrarModal" name="btnRegistrarModal">Registrar</button>
 
@@ -366,7 +379,20 @@
           });
           if(aux==0)
           {
+            $('#divTotalCancelar').text("TOTAL (Bs): "+$('#txtTotal').val());
+            $('#txtPagoEfectivo').val($('#txtTotal').val());
+            $('#txtCambio').val(0);
+
+            // ocultar los campos del modal
+            $('#lblBanco').hide();
+            $('#cmbbancos').hide();
+            $("#cmbbancos").prop('disabled', true);
+            $('#lblComprobante').hide();
+            $('#txtComprobante').hide();
+            $("#txtComprobante").prop('disabled', true);
+            // ocultar los campos del modal final
             $('#modalTipoPago').modal('show');
+
           }
           else {
             swal("Error al Registrar!", "Necesita Ingresar la Cantidad", "error");
@@ -381,6 +407,97 @@
       //   $( "#wfrNuevo" ).submit();
       // });
 
+      // capturar evento onchange de tipoPago inicio
+      $(document).on('change', '#cmbtipopago', function(event) {
+        a=$('#cmbtipopago').val();
+        if(a==1)
+        {
+          // ocultar
+          $('#lblBanco').hide();
+          $('#cmbbancos').hide();
+          $("#cmbbancos").prop('disabled', true);
+          $('#lblComprobante').hide();
+          $('#txtComprobante').hide();
+          $("#txtComprobante").prop('disabled', true);
+          // mostrar
+          $('#txtPagoEfectivo').show();
+          $("#txtPagoEfectivo").prop('disabled', false);
+          $('#txtCambio').show();
+          $("#txtCambio").prop('disabled', false);
+          $('#lblPagoEfectivo').show();
+          $('#lblCambio').show();
+        }
+        if(a==2)
+        {
+          // ocultar
+          $('#txtPagoEfectivo').hide();
+          $("#txtPagoEfectivo").prop('disabled', true);
+          $('#txtCambio').hide();
+          $("#txtCambio").prop('disabled', true);
+          $('#lblPagoEfectivo').hide();
+          $('#lblCambio').hide();
+          // mostrar
+          $('#lblBanco').show();
+          $('#cmbbancos').show();
+          $("#cmbbancos").prop('disabled', false);
+          $('#lblComprobante').show();
+          $('#txtComprobante').show();
+          $("#txtComprobante").prop('disabled', false);
+        }
+        if(a==3)
+        {
+          // ocultar
+          $('#txtPagoEfectivo').hide();
+          $("#txtPagoEfectivo").prop('disabled', true);
+          $('#txtCambio').hide();
+          $("#txtCambio").prop('disabled', true);
+          $('#lblPagoEfectivo').hide();
+          $('#lblCambio').hide();
+          // mostrar
+          $('#lblBanco').show();
+          $('#cmbbancos').show();
+          $("#cmbbancos").prop('disabled', false);
+          $('#lblComprobante').show();
+          $('#txtComprobante').show();
+          $("#txtComprobante").prop('disabled', false);
+        }
+        if(a==4)
+        {
+          // ocultar
+          $('#txtPagoEfectivo').hide();
+          $("#txtPagoEfectivo").prop('disabled', true);
+          $('#txtCambio').hide();
+          $("#txtCambio").prop('disabled', true);
+          $('#lblPagoEfectivo').hide();
+          $('#lblCambio').hide();
+          // mostrar
+          $('#lblBanco').show();
+          $('#cmbbancos').show();
+          $("#cmbbancos").prop('disabled', false);
+          $('#lblComprobante').show();
+          $('#txtComprobante').show();
+          $("#txtComprobante").prop('disabled', false);
+        }
+        if(a==5)
+        {
+          // ocultar
+          $('#txtPagoEfectivo').hide();
+          $("#txtPagoEfectivo").prop('disabled', true);
+          $('#txtCambio').hide();
+          $("#txtCambio").prop('disabled', true);
+          $('#lblPagoEfectivo').hide();
+          $('#lblCambio').hide();
+          // mostrar
+          $('#lblBanco').show();
+          $('#cmbbancos').show();
+          $("#cmbbancos").prop('disabled', false);
+          $('#lblComprobante').show();
+          $('#txtComprobante').show();
+          $("#txtComprobante").prop('disabled', false);
+        }
+      });
+      // capturar evento onchange de tipoPago fin
+
     });
   </script>
   <script type="text/javascript">
@@ -392,9 +509,9 @@
       descC=$("#hdeDescuento").val();
       co="<input type='hidden' id='hdeP' name='hdeP[]' value='"+cod+"' >"
       cantidadAlmacen="<input type='hidden' id='hdeCA"+cod+"' name='hdeCA[]' value='"+cantidadD+"' >"
-      c="<input type='number' onkeyup='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' name='txtC[]'>";
+      c="<input type='number' oninput='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' name='txtC[]'>";
       p="<input type='number' onkeyup='calcular("+cod+")' required step='any' class='form-control' id='txtP"+cod+"' name='txtP[]' value='"+precioV+"' readonly>";
-      d="<input type='number' onkeyup='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' value='"+descC+"'>";
+      d="<input type='number' oninput='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' value='"+descC+"'>";
       s="<input type='number' readonly class='form-control' id='txtS"+cod+"' name='txtS[]' >";
       b="<span class='btn btn-danger btn-sm fa fa fa-trash' onclick='borrarFila("+cod+")'></span>";
       fila="<tr id='fila"+cod+"'><td>"+cod+co+"</td><td>"+cantidadD+cantidadAlmacen+"</td><td>"+articulo+"</td><td>"+descripcion+"</td><td><img style='max-width: 40px ' class='img-fluid' src='productos/"+foto+"' ></td><td>"+unidad+"</td><td>"+c+"</td><td>"+p+"</td><td>"+d+"</td><td>"+s+"</td><td>"+b+"</td></tr>";
@@ -413,7 +530,8 @@
     {
       cantidad=$('#txtC'+cod).val();
       cantidadA=$('#hdeCA'+cod).val();
-      if (cantidad>cantidadA) {
+      p=cantidad-cantidadA;
+      if (p>0) {
         swal({
           title: "Cantidad Mayor a las Existentes!",
           text: "La cantidad no puede ser mayor a la Disponible",
@@ -528,30 +646,46 @@
     function obtenerNit()
     {
       codCliente=$('#cmbcliente').val();
-      $.ajax({
-        type:"POST",
-        data:"cod=" + codCliente,
-        url:"ajax/obtenDatosCliente.php",
-        success:function(r){
-          datos=jQuery.parseJSON(r);
-          $('#txtRazonSocial').val(datos['razonSocial']);
-          $('#txtNit').val(datos['nit']);
-          $('#txtPlazo').val(datos['plazoCredito']);
-          $('#hdeDescuento').val(datos['descuento']);
-          // llenar descuentos despues de elegir productos
-          if(cont>0)
-          {
-            $("#dataTableDetalle tbody tr").each(function(){
-              co = $(this).find("td:eq(0)").text();
+      if(codCliente==0)
+      {
+        $('#txtRazonSocial').val("Consumidor Final");
+        $('#txtNit').val(99002);
+      }else {
 
-              $('#txtD'+co).val(datos['descuento']);
-            });
+        $.ajax({
+          type:"POST",
+          data:"cod=" + codCliente,
+          url:"ajax/obtenDatosCliente.php",
+          success:function(r){
+            datos=jQuery.parseJSON(r);
+            $('#txtRazonSocial').val(datos['razonSocial']);
+            $('#txtNit').val(datos['nit']);
+            $('#txtPlazo').val(datos['plazoCredito']);
+            $('#hdeDescuento').val(datos['descuento']);
+            // llenar descuentos despues de elegir productos
+            if(cont>0)
+            {
+              $("#dataTableDetalle tbody tr").each(function(){
+                co = $(this).find("td:eq(0)").text();
+
+                $('#txtD'+co).val(datos['descuento']);
+              });
+            }
+
+            // $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/1logo.jpg' >");
           }
-
-          // $('#divLogoAntiguo').html("<img class='img-fluid' src='logos/1logo.jpg' >");
-        }
-      });
+        });
+      }
     }
+
+    function calcularCambio()
+    {
+      pa=$('#txtPagoEfectivo').val();
+      tot=$('#txtTotal').val();
+      cambio=pa - tot;
+      $('#txtCambio').val(cambio);
+    }
+
 
   </script>
 </body>

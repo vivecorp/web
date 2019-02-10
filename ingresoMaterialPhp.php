@@ -33,7 +33,7 @@
                                      $codUsuario
                                     )";
   $insertar=$con->exec($queryI);
-  // // actualizar estado
+  // // actualizar estado 
   $queryA="UPDATE detallecompras set
                     codEstadoInventario=$estado
 					where codDetalleCompras=$codDetalleCompras";
