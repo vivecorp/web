@@ -101,8 +101,32 @@
 			                                     $codVentas,
 			                                     $codAsignacion
 			                                    )";
-				$ro= array(codFactura => $queryIF);
-				echo json_encode($ro);
+				// $ro= array(codFactura => $queryIF);
+				// echo json_encode($ro);
+				$insertarF=$con->exec($queryIF);
+				// insertar detalle Factura
+				$queryODV="select * from detalleventas where codVentas = $codVentas";
+				$buscarODV=$con->query($queryODV);
+		    while($rowODV=$buscarODV->fetch(PDO::FETCH_ASSOC))
+		    {
+					$precioF=$rowODV['precio'];
+					$cantidadF=$rowODV['cantidad'];
+					$descuentoF=$rowODV['descuento'];
+					$subTotalF=$rowODV['subTotal'];
+					$codProductoF=$rowODV['codProducto'];
+
+					$codDetalleFactura=obtenerUltimo("detallefactura","codDetalleFactura");
+
+					$queryIDF="insert into detallefactura values($codDetalleFactura,
+																							$precioF,
+																							$cantidadF,
+																						 $descuentoF,
+																						 $subTotalF,
+																						 $codFactura,
+				                                     $codProductoF
+				                                    )";
+					$insertarIDF=$con->exec($queryIDF);
+				}
 			}
 			else
 			{
