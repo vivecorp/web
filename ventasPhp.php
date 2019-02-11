@@ -12,6 +12,7 @@
   $codVentas=$_POST['txtCodVentas'];
   $fecha=$_POST['txtFecha'];
   $total=$_POST['txtTotal'];
+  $dsctTotal=$_POST['txtDsctTotal'];
   $codCliente=$_POST['cmbcliente'];
   $razonSocial=$_POST['txtRazonSocial'];
   $nit=$_POST['txtNit'];
@@ -31,6 +32,7 @@
   $queryI="insert into ventas values($codVentas,
                                      '$fecha',
                                      $total,
+                                     $dsctTotal,
                                      $codCliente,
                                      '$razonSocial',
                                      '$nit',

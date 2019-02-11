@@ -521,7 +521,7 @@
       if(band==0)
       {
         band=1;
-        filaTotal="<tfoot><tr id='filaTotal'><td colspan='9' align='right'>Total</td><td><input type='number' readonly class='form-control' id='txtTotal' value='0' required name='txtTotal'></td></tr></tfoot>";
+        filaTotal="<tfoot><tr id='filaTotal'><td colspan='9' align='right'>Total</td><td><input type='number' readonly class='form-control' id='txtTotal' value='0' required name='txtTotal'><input type='number' readonly class='form-control' id='txtDsctTotal' value='0'  name='txtDsctTotal'></td></tr></tfoot>";
         $('#dataTableDetalle').append(filaTotal);
       }
       cont++;
@@ -564,17 +564,27 @@
       if(cont>0)
       {
         su=0;
+        dsct=0;
         $("#dataTableDetalle tbody tr").each(function(){
           co = $(this).find("td:eq(0)").text();
-
+          // calcular subtotal
           subtotal=parseFloat($('#txtS'+co).val());
           if(isNaN(subtotal)==true)
           {
             subtotal=0;
           }
           su=su + subtotal;
+          // calcular descuento promedio
+          d=parseFloat($('#txtD'+co).val());
+          if(isNaN(d)==true)
+          {
+            d=0;
+          }
+          dsct=(dsct + d);
         });
+        dsct=dsct/cont;
         $('#txtTotal').val(su);
+        $('#txtDsctTotal').val(dsct);
       }
     }
     // funcion para borra la fila del detalle de compras

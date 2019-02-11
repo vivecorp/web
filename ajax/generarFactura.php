@@ -1,5 +1,7 @@
 <?php
+	include '../inc/control.php';
 	require_once "../inc/config.php";
+	require "../inc/obtener.php";
 	$codVentas=$_POST['codVentas'];
 
 	// buscar ultimo codigo de usuario
@@ -10,7 +12,7 @@
     // existe
     $row=$result->fetch(PDO::FETCH_ASSOC);
 		$codUsuario=$row['codUsuario'];
-		$queryA="select d.nit as nit, d.key as llave, d.nroAutorizacion as nroAutorizacion,
+		$queryA="select asi.codAsignacion as codAsignacion, d.nit as nit, d.key as llave, d.nroAutorizacion as nroAutorizacion,
 										d.fechaLimite as fechaLimite, a.descripcion as actividadEconomica,
 										p.nombre as puntoVenta, p.direccion as direccion, p.celular as celular,
 										p.telefono as telefono, u.nombre as nombreUsuario
@@ -36,6 +38,7 @@
 		{
 			// obtener los datos de asignacion dosificacion codigo de control fecha Limite
 			$rowA=$resultA->fetch(PDO::FETCH_ASSOC);
+			$codAsignacion=$rowA['codAsignacion'];
 			$nitEmpresa=$rowA['nit'];
 			$llave=$rowA['llave'];
 			$nroAutorizacion=$rowA['nroAutorizacion'];
@@ -54,14 +57,52 @@
 
 				// generar factura y luego Imprimir
 				$total=$row['total'];
+				$dsctTotal=$row['descuento'];
 				$razonSocial=$row['razonSocial'];
 				$nitCliente=$row['nit'];
+				// Obtener ultimo numero de factura
+				$queryOF="SELECT ifnull(max(nroFactura)+1,1) as ultF from factura where codAsignacion=$codAsignacion";
+				$resultFactura=$con->query($queryOF);
+			  if($resultFactura->rowCount() == 1){
+			    // existe
+			    $rowFactura=$resultFactura->fetch(PDO::FETCH_NUM);
+			    $nroFactura=$rowFactura[0];
+			  }else{
+			    echo "No se encontro ningun registro";
+			    return false;
+			  }
+				$controlCode = new ControlCode();
+				// llamar a la funcion de codigo de control para la Factura
+				// $nroFactura=673173;
+				// $nitCliente="1666188";
+				// $fechaFactura="2008/08/10";
+				// $total=51330;
 
-				
-				// $ro= array(codFactura => $celular);
-				// echo json_encode($ro);
+				$fechaFactura=date("Y/m/d");
+				$code = $controlCode->generate($nroAutorizacion,//Numero de autorizacion
+                                       $nroFactura,//Numero de factura
+                                       $nitCliente,//Número de Identificación Tributaria o Carnet de Identidad
+                                       str_replace('/','',$fechaFactura),//fecha de transaccion de la forma AAAAMMDD
+                                       $total,//Monto de la transacción
+                                       $llave//Llave de dosificación
+                    									);
 
-
+				$codFactura=obtenerUltimo("factura","codFactura");
+				$queryIF="insert into factura values($codFactura,
+																						$nroFactura,
+																						CURDATE(),
+			                                     current_time(),
+																					 '$razonSocial',
+																					 '$nitCliente',
+																					 $dsctTotal,
+																					 $total,
+			                                     '$code',
+			                                     '$qr',
+			                                     $codVentas,
+			                                     $codAsignacion
+			                                    )";
+				$ro= array(codFactura => $queryIF);
+				echo json_encode($ro);
 			}
 			else
 			{
