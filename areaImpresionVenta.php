@@ -9,86 +9,7 @@
 
   $codUsuario=$_SESSION['codUsuarioG'];
   // recibir datos post
-  $codVentas=$_POST['txtCodVentas'];
-  $fecha=$_POST['txtFecha'];
-  $total=$_POST['txtTotal'];
-  $dsctTotal=$_POST['txtDsctTotal'];
-  $codCliente=$_POST['cmbcliente'];
-  $razonSocial=$_POST['txtRazonSocial'];
-  $nit=$_POST['txtNit'];
-  $formaPago=$_POST['cmbformapago'];
-  if($formaPago==1)
-  {
-    $plazo=null;
-    $codEstadoPago=2;
-  }
-  else {
-    $plazo=$_POST['txtPlazo'];
-    $codEstadoPago=1;
-  }
-  $codAlmacen=$_POST['hdeAlmacen'];
-  $codTipoMovimiento=2;
-  // registrar la tabla ventas
-  $queryI="insert into ventas values($codVentas,
-                                     '$fecha',
-                                     $total,
-                                     $dsctTotal,
-                                     $codCliente,
-                                     '$razonSocial',
-                                     '$nit',
-                                     0,
-                                     $codEstadoPago,
-                                     $formaPago,
-                                     $codUsuario
-                                    )";
-
-  $insertar=$con->exec($queryI);
-
-  // obtener datos para detalle ventas
-  $producto=$_POST['hdeP'];
-  $cantidad=$_POST['txtC'];
-  $precio=$_POST['txtP'];
-  $descuento=$_POST['txtD'];
-  $subtotal=$_POST['txtS'];
-  // $aux="";
-  for ( $e = 0; $e < count ($cantidad); $e++ )
-  {
-    $codigo=obtenerUltimo("detalleventas","codDetalleVentas");
-    $desc=$descuento[$e];
-    if(!$desc)
-    {
-      $desc=0;
-    }
-    $q="insert into detalleventas values($codigo,
-                                          $precio[$e],
-                                          $cantidad[$e],
-                                          $desc,
-                                          $subtotal[$e],
-                                          $codVentas,
-                                          $producto[$e]
-                                          )";
-    $insertarDetalle=$con->exec($q);
-    // $aux=$aux."|".$q;
-    // obtener datos para el inventario
-    // // obtener ultimo codigo de inventario
-    $codEstadoMaterial=1;
-    $cantidadI=$cantidad[$e] * (-1);
-    $codInventario=obtenerUltimo("inventario","codInventario");
-    $queryIn="insert into inventario values($codInventario,
-                                       '$fecha',
-                                       $cantidadI,
-                                       null,
-                                       $codigo,
-                                       $producto[$e],
-                                       $codAlmacen,
-                                       $codTipoMovimiento,
-                                       $codEstadoMaterial,
-                                       $codUsuario
-                                      )";
-    $insertar=$con->exec($queryIn);
-    // obtener datos para el inventario fin
-  }
-header("location: areaImpresionVenta.php?codVentas=$codVentas");
+  $codVentas=$_GET['codVentas'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,14 +28,14 @@ header("location: areaImpresionVenta.php?codVentas=$codVentas");
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-user"></i> Orden de Compra</h1>
-        <p>Impresion de Orden de Compra</p>
+        <h1><i class="fa fa-user"></i>Impresion Venta</h1>
+        <p>Area de Impresion de Ventas</p>
       </div>
       <ul class="app-breadcrumb breadcrumb side">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
         <li class="breadcrumb-item active"><a href="gerenteConsole.php">Inicio</a></li>
-        <li class="breadcrumb-item active"><a href="compras.php">Compras</a></li>
-        <li class="breadcrumb-item">Impresion Orden de Compra</li>
+        <li class="breadcrumb-item active"><a href="ventas.php">Ventas</a></li>
+        <li class="breadcrumb-item">Area Impresion Ventas </li>
       </ul>
     </div>
 
@@ -132,7 +53,7 @@ header("location: areaImpresionVenta.php?codVentas=$codVentas");
               // echo $codAlmacen;
              ?>
 					  <p>Impresion de los Registros</p>
-            <p>Imprimir Orden de Venta <button type="button" class="btn btn-primary" onClick="imprimir()">Imprimir</button></p>
+            <p>Imprimir Nota de Venta <button type="button" class="btn btn-primary" onClick="imprimir()">Imprimir</button></p>
             <p>Imprimir Factura <button type="button" class="btn btn-primary" onClick="imprimirFactura()">Imprimir</button></p>
 				  </div>
 				  <div class="modal-footer">
@@ -177,8 +98,9 @@ header("location: areaImpresionVenta.php?codVentas=$codVentas");
 
 				var cod="<?php echo $codVentas; ?>";
 				// window.open("impresionVentas.php");
-        alert("Se Realizara la Impresion de la Orden de Venta");
-				window.open("impresionOrdenVentaPdf.php?codVentas="+cod);
+        swal("Impresion","Se Realizara la Impresion de la Nota de Venta","warning");
+
+				window.open("impresionNotaVenta.php?codVentas="+cod);
 		}
     function imprimirFactura()
     {
@@ -194,7 +116,7 @@ header("location: areaImpresionVenta.php?codVentas=$codVentas");
           if(datos['opt'] == 1)
           {
             swal("Impresion","Se realizara la impresion de la FACTURA","warning");
-            window.open("impresionFactura.php?codFactura="+datos['codFactura']);
+            window.open("impresionFactura.php?codVentas="+datos['codVentas']);
           }else {
             swal("Impresion",datos['codFactura'],"error");
           }

@@ -1,8 +1,14 @@
 <?php
+	session_start();
+	if(!$_SESSION['codUsuarioG'] || $_SESSION['roleG']!=1)
+	{
+		header("location: login.php");
+	}
 	include '../inc/control.php';
 	require_once "../inc/config.php";
 	require "../inc/obtener.php";
 	$codVentas=$_POST['codVentas'];
+	$codUsuarioG=$_SESSION['codUsuarioG'];
 
 	// buscar ultimo codigo de usuario
 	$query="SELECT * from ventas where codVentas=$codVentas";
@@ -30,7 +36,7 @@
 		$resultA=$con->query($queryA);
 		if($resultA->rowCount()==0)
 		{
-			$ro= array(codFactura => "No Existe Dosificacion Asignada");
+			$ro= array(codFactura => "No Existe Dosificacion Asignada", opt => 0);
 			echo json_encode($ro);
 			return false;
 		}
@@ -86,7 +92,12 @@
                                        $total,//Monto de la transacción
                                        $llave//Llave de dosificación
                     									);
-
+				if(!$dsctTotal)
+				{
+					$dsctTotal=0;
+				}
+				$dsctMonto=round($total*($dsctTotal/100),2);
+				$qr="$nitEmpresa|$nroFactura|$nroAutorizacion|$fechaFactura|$total|$total|$code|$nitCliente|0|0|0|$dsctMonto";
 				$codFactura=obtenerUltimo("factura","codFactura");
 				$queryIF="insert into factura values($codFactura,
 																						$nroFactura,
@@ -99,7 +110,8 @@
 			                                     '$code',
 			                                     '$qr',
 			                                     $codVentas,
-			                                     $codAsignacion
+			                                     $codAsignacion,
+																					 $codUsuarioG
 			                                    )";
 				// $ro= array(codFactura => $queryIF);
 				// echo json_encode($ro);
@@ -127,11 +139,15 @@
 				                                    )";
 					$insertarIDF=$con->exec($queryIDF);
 				}
+				$ro= array(codVentas => $codVentas, opt => 1);
+				echo json_encode($ro);
+				return false;
 			}
 			else
 			{
-					$ro= array(codFactura => "factura generada solo imprimir");
+					$ro= array(codVentas => $codVentas, opt => 1);
 					echo json_encode($ro);
+					return false;
 			}
 
 			// $queryI="insert into factura values($codFactura,
@@ -156,25 +172,5 @@
 		echo "No se encontro ningun registro";
 		return false;
 	}
-	// $sql="INSERT into cliente	values (
-	// 										$codO,
-	// 										'$datos[0]',
-	// 										'$datos[1]',
-	// 										'$datos[2]',
-	// 										'$datos[3]',
-	// 										'$datos[4]',
-	// 										'$datos[5]',
-	// 										'$datos[6]',
-	// 										'$datos[7]',
-	// 										'$datos[8]',
-	// 										$datos[9],
-	// 										$datos[10],
-	// 										$datos[11],
-	// 										$datos[12]
-	// 									)";
-	//
-	// 	$row= array(id => $buscarU=$con->exec($sql), codClienteJ => $codO,plazo => $datos[10], descuento => $datos[9]);
-	// 	echo json_encode($row);
 
-		// echo $obj->agregarUsuario($datos);
  ?>
