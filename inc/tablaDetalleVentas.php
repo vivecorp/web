@@ -3,7 +3,7 @@
 ?>
 <table class="table table-hover table-condensed table-bordered table-responsive" style="font-size: 13px;" id="dataTableDetalle">
   <thead>
-    <tr>
+    <tr valign="middle" class="btn-primary">
       <th>Cod</th>
       <th>Cant Disp</th>
       <th>Articulo</th>

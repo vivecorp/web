@@ -5,6 +5,21 @@ session_start();
 	{
 		 session_destroy();
 	}
+
+  // Obtener datos de la empresa
+  $queryOE="select * from parametros";
+  $resultOE=$con->query($queryOE);
+  if($resultOE->rowCount() == 1){
+    // existe
+    $rowOE=$resultOE->fetch(PDO::FETCH_ASSOC);
+    $empresa=$rowOE['empresa'];
+    $logo=$rowOE['logo'];
+    $logo="images/".$logo;
+  }else{
+    echo "No se encontro ningun parametro";
+    return false;
+  }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,8 +30,8 @@ session_start();
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>VIVECORP</title>
+    <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <title><?php echo $empresa; ?></title>
   </head>
   <body>
     <section class="material-half-bg">
@@ -28,7 +43,7 @@ session_start();
       </div>
       <div class="login-box">
         <form class="login-form" action="POST" id="wfrLogin">
-          <h3 class="login-head"><img src="images/logo.jpg" width="250" alt="" ></h3>
+          <h3 class="login-head"><img src="<?php echo $logo; ?>" width="250" alt="" ></h3>
 
           <div class="form-group">
             <label class="control-label">USUARIO</label>

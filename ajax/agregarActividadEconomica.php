@@ -2,7 +2,8 @@
 	require_once "../inc/config.php";
 	$datos=array(
 		$_POST['txtCodigo'],
-		$_POST['txtActividadEconomica']
+		$_POST['txtActividadEconomica'],
+		$_POST['txtAbreviatura']
 				);
 	// buscar ultimo codigo
 	$query="SELECT ifnull(max(codActividadEconomica)+1,1) as ult from actividadeconomica";
@@ -18,7 +19,8 @@
 	$sql="INSERT into actividadeconomica	values (
 											$codO,
 											'$datos[0]',
-											'$datos[1]'
+											'$datos[1]',
+											'$datos[2]'
 										)";
 		echo $buscarU=$con->exec($sql);
 		// echo $obj->agregarUsuario($datos);

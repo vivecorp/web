@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if(!$_SESSION['codUsuarioG'] || $_SESSION['roleG']!=1)
+  if($_SESSION['roleG']!=0)
   {
   	header("location: login.php");
   }
@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <?php require "inc/header.php"; ?>
+    <?php require "inc/headerUploader.php"; ?>
   </head>
   <body class="app sidebar-mini rtl">
     <!-- Navbar-->
@@ -28,7 +28,7 @@
         </div>
         <ul class="app-breadcrumb breadcrumb side">
           <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-          <li class="breadcrumb-item active"><a href="gerenteConsole.php">Inicio</a></li>
+          <li class="breadcrumb-item active"><a href="configConsole.php">Inicio</a></li>
           <li class="breadcrumb-item">Usuarios</li>
         </ul>
       </div>
@@ -49,7 +49,7 @@
       </div>
     </main>
     <!-- crear modal para nuevo usuario -->
-    <form id="wfrNuevoUsuario" method="post">
+    <form id="wfrNuevoUsuario" name="wfrNuevoUsuario" method="post" enctype="multipart/form-data">
     <div class="modal fade" id="modalNuevoUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -72,6 +72,8 @@
 						<input type="text" class="form-control input-sm" id="txtUsuario" name="txtUsuario" required>
             <label>Password</label>
 						<input type="password" class="form-control input-sm" id="txtPassword" name="txtPassword" required>
+            <label>Re-Password</label>
+						<input type="password" class="form-control input-sm" id="txtRePassword" name="txtRePassword" required>
             <label>Fecha de Nacimiento</label>
 						<input type="date" class="form-control input-sm" id="txtNacimiento" name="txtNacimiento">
             <label>Rol</label>
@@ -87,6 +89,8 @@
                 ?>
               </optgroup>
             </select>
+            <label>Foto</label>
+            <input id="fileFoto" name="fileFoto" multiple="false" type="file">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -98,7 +102,7 @@
   </form>
 
   <!-- modal para actualizar -->
-  <form id="wfrActualizarUsuario">
+  <form id="wfrActualizarUsuario" method="post" enctype="multipart/form-data">
   <div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -137,6 +141,9 @@
                 ?>
               </optgroup>
             </select>
+            <label>Foto</label>
+            <div id="divFotoAntiguo"></div>
+            <input id="fileFotoA" name="fileFotoA" multiple="false" type="file">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -147,87 +154,121 @@
   </form>
 	</div>
 
-    <!-- Essential javascripts for application to work-->
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
-    <!-- script para funcionar el select con busquedas -->
-    <script type="text/javascript" src="js/plugins/select2.min.js"></script>
-    <!-- The javascript plugin to display page loading on top-->
-    <script src="js/plugins/pace.min.js"></script>
-    <!-- Page specific javascripts-->
-    <!-- Data table plugin-->
-    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-    <!-- javascript para notificacionse -->
-    <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
-    <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
+  <!-- Essential javascripts for application to work-->
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
+  <!-- script para funcionar el select con busquedas -->
+  <script type="text/javascript" src="js/plugins/select2.min.js"></script>
+  <!-- The javascript plugin to display page loading on top-->
+  <script src="js/plugins/pace.min.js"></script>
+  <!-- Page specific javascripts-->
+  <!-- Data table plugin-->
+  <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+  <!-- javascript para notificacionse -->
+  <script type="text/javascript" src="js/plugins/bootstrap-notify.min.js"></script>
+  <script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
     <!-- llamar a la data table de usuarios -->
     <script type="text/javascript">
       // cargar la datatable usuarios
     	$(document).ready(function(){
+        $("#fileFoto").fileinput({
+          // uploadUrl: "/file-upload-batch/1",
+          // uploadAsync: false,
+          overwriteInitial: true,
+          allowedFileExtensions: ['jpg', 'png', 'gif'],
+          // overwriteInitial: false,
+          // maxFileSize: 1000,
+          // maxFilesNum: 1,
+          allowedFileTypes: ['image'],
+          // slugCallback: function(filename) {
+          //   return filename.replace('(', '_').replace(']', '_');
+          // }
+          showUpload: false,
+          showCancel: false
+        });
+        $("#fileFotoA").fileinput({
+          // uploadUrl: "/file-upload-batch/1",
+          // uploadAsync: false,
+          overwriteInitial: true,
+          allowedFileExtensions: ['jpg', 'png', 'gif'],
+          // overwriteInitial: false,
+          // maxFileSize: 1000,
+          // maxFilesNum: 1,
+          allowedFileTypes: ['image'],
+          // slugCallback: function(filename) {
+          //   return filename.replace('(', '_').replace(']', '_');
+          // }
+          showUpload: false,
+          showCancel: false
+        });
     		$('#divDataTable').load('inc/tablaUsuario.php');
       // llenar por ajax nuevo usuarios
         $(document).on("submit","#wfrNuevoUsuario",function(event){
           event.preventDefault();
-    			datos=$('#wfrNuevoUsuario').serialize();
-    			$.ajax({
-    				type:"POST",
-    				data:datos,
-    				url:"ajax/agregarUsuario.php",
-    				success:function(r){
-    					if(r==1){
-    						$('#wfrNuevoUsuario')[0].reset();
-    						$('#divDataTable').load('inc/tablaUsuario.php');
-                $('#modalNuevoUsuario').modal('hide');
-                swal({
-                  title: "Nuevo Usuario",
-                  text: "Registro Exitoso!",
-                  icon: "success"
-                });
-    					}else{
-                swal({
-                  title: "Nuevo Usuario",
-                  text: "Error en Registrar!",
-                  icon: "error"
-                });
+          // datos=$('#wfrNuevo').serialize();
+          if($('#txtPassword').val() == $('#txtRePassword').val())
+          {
 
-    					}
-    				}
-    		  });
+            var f = $(this);
+            var formData = new FormData(document.getElementById("wfrNuevoUsuario"));
+            formData.append("dato", "valor");
+            $.ajax({
+              url:"ajax/agregarUsuario.php",
+              type:"POST",
+              dataType: "html",
+              data: formData,
+              cache: false,
+              contentType: false,
+    	        processData: false
+            })
+              // data:datos,
+              .done(function(r){
+                if(r==1){
+                  $('#wfrNuevoUsuario')[0].reset();
+                  $('#divDataTable').load('inc/tablaUsuario.php');
+                  $('#modalNuevoUsuario').modal('hide');
+                  swal("Nuevo Usuario", "El Registro fue Exitoso.", "success");
+                }else{
+                  swal("Nuevo Usuario", "Error de Registro:"+r, "error");
+                }
+              });
+          }
+          else {
+            swal("Nuevo Usuario", "El Password no Coincide", "error");
+
+          }
+
          });
 
          //ajax actualizar
-         $(document).on("submit","#wfrActualizarUsuario",function(event){
+        $(document).on("submit","#wfrActualizarUsuario",function(event){
           event.preventDefault();
-     			datos=$('#wfrActualizarUsuario').serialize();
+          var f = $(this);
+          var formData = new FormData(document.getElementById("wfrActualizarUsuario"));
+          formData.append("dato", "valor");
      			$.ajax({
-     				type:"POST",
-     				data:datos,
      				url:"ajax/actualizarUsuario.php",
-     				success:function(r){
-     					if(r==1){
+            type:"POST",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+  	        processData: false
+          })
+            .done(function(r){
+              if(r==1){
                 $('#modalEditarUsuario').modal('hide');
-                swal({
-                  title: "Actualizar Usuario",
-                  text: "Registro Exitoso!",
-                  icon: "success"
-                });
+                swal("Actualizar Usuario","Registro Exitoso!","success");
                 $('#divDataTable').load('inc/tablaUsuario.php');
-     					}else{
-                swal({
-                   title: "Nuevo Usuario",
-                   text: "Error en Registrar!",
-                   icon: "error"
-                });
-     					}
-     				}
-     		  });
-          });
-
+         			}else{
+                swal("Nuevo Usuario","Error en Registrar!","error");
+         			}
+            });
 
         });
+      });
     </script>
     <script type="text/javascript">
       // funcion borrar usuario
@@ -280,6 +321,7 @@
             $('#txtPasswordA').val(datos['password']);
             $('#txtNacimientoA').val(datos['fechaNacimiento']);
     				$('#cmbRoleA').val(datos['codRole']);
+            $('#divFotoAntiguo').html("<img class='img-fluid' width='150' src='foto/"+datos['foto']+"' >");
     			}
     		});
 

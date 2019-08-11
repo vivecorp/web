@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if(!$_SESSION['codUsuarioG'] || $_SESSION['roleG']!=1)
+  if($_SESSION['roleG']!=0)
   {
   	header("location: login.php");
   }
@@ -67,6 +67,8 @@
           <input type="text" class="form-control input-sm" id="txtCodigo" name="txtCodigo" required>
           <label>Actividad Economica</label>
           <input type="text" class="form-control input-sm" id="txtActividadEconomica" name="txtActividadEconomica" required>
+          <label>Abreviatura</label>
+          <input type="text" class="form-control input-sm" id="txtAbreviatura" name="txtAbreviatura" >
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -94,6 +96,8 @@
           <input type="text" class="form-control input-sm" id="txtCodigoA" name="txtCodigoA" required>
           <label>Actividad Economica</label>
           <input type="text" class="form-control input-sm" id="txtActividadEconomicaA" name="txtActividadEconomicaA" required>
+          <label>Abreviatura</label>
+          <input type="text" class="form-control input-sm" id="txtAbreviaturaA" name="txtAbreviaturaA">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -232,6 +236,7 @@
           $('#hdeCodActividadEconomicaA').val(datos['codActividadEconomica']);
           $('#txtCodigoA').val(datos['codigo']);
           $('#txtActividadEconomicaA').val(datos['descripcion']);
+          $('#txtAbreviaturaA').val(datos['abreviatura']);
         }
       });
 

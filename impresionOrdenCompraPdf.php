@@ -7,7 +7,7 @@ if(!$_SESSION['codUsuarioG'] || $_SESSION['roleG']!=1)
 require_once "inc/config.php";
 require "inc/obtener.php";
 $codComprasG=$_GET['codCompras'];
-$queryOC="select c.fecha as fecha, c.observacion as observacion,
+$queryOC="select date_format(c.fecha,'%d/%m/%Y') as fecha, c.observacion as observacion,
 	   c.total as total, u.nombre as usuario, p.empresa as proveedor,
        p.pais as pais, p.contacto as contacto, p.cel as cel, p.email as email
 from compras c, proveedor p, usuario u

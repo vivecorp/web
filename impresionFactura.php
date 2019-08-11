@@ -14,7 +14,8 @@ $queryOV="select f.codFactura as codFactura, date_format(f.fecha,'%d/%m/%Y') as 
                  f.nroFactura as nroFactura, f.razonSocial as razonSocial, f.nit as nit, f.codControl as codControl,
                  f.qr as qr, f.total as total, f.descuento as descuento,
                  date_format(d.fechaLimite, '%d/%m/%Y') as fechaLimite, d.nit as nitEmpresa,
-                 d.nroAutorizacion as nroAutorizacion, u.nombre as usuario, ae.descripcion as actividadEconomica, pv.nombre as puntoVenta
+                 d.nroAutorizacion as nroAutorizacion, u.nombre as usuario, ae.abreviatura as actividadEconomica,
+                 pv.nombre as puntoVenta,f.flete as flete
             from factura f, dosificacion d, asignacion a, usuario u, actividadeconomica ae, puntoventa pv
             where f.codAsignacion=a.codAsignacion and a.codPuntoVenta=pv.codPuntoVenta and
                   a.codDosificacion=d.codDosificacion and d.codActividadEconomica=ae.codActividadEconomica and
@@ -28,7 +29,7 @@ if($resultOV->rowCount() == 1){
   $hora=$rowOV['hora'];
   $nroFactura=$rowOV['nroFactura'];
   $razonSocial=$rowOV['razonSocial'];
-  $nit=$rowOV['nit'];
+  $nitCliente=$rowOV['nit'];
   $codControl=$rowOV['codControl'];
   $qr=$rowOV['qr'];
   $total=$rowOV['total'];
@@ -40,6 +41,7 @@ if($resultOV->rowCount() == 1){
   $usuario=$rowOV['usuario'];
   $actividadEconomica=$rowOV['actividadEconomica'];
   $puntoVenta=$rowOV['puntoVenta'];
+  $flete=$rowOV['flete'];
 
 }else{
     echo "No se encontro ningun registro";
@@ -56,6 +58,8 @@ else {
   $pag='rawbt.css';
 }
 
+
+
 // obtener parametros de la empresa
 $qe="select * from parametros";
 $resultQe=$con->query($qe);
@@ -69,6 +73,8 @@ if ($rowE=$resultQe->fetch(PDO::FETCH_ASSOC)) {
   $celular=$rowE['celular'];
   $ciudad=$rowE['ciudad'];
   $pais=$rowE['pais'];
+  $leyendaConsumidor=$rowE['leyendaConsumidor'];
+
 }
 else {
   $empresa="Nombre de Empresa no definido";
@@ -84,37 +90,48 @@ else {
     <script language="javascript">
       window.onfocus=function(){ window.close();}
     </script>
+    <script type="text/javascript" src="js/qrcode.js"></script>
+    <style media="screen">
+    .contenedor{
+      float:left;
+    }
+
+    .contenedor img{
+      float: left;
+    }
+    </style>
 </head>
-<!-- <body onload="window.print();"> -->
-<body>
+<body onload="window.print();">
+<!-- <body> -->
     <div class="invoice">
         <div class="header">
-            <p class="company" style="line-height: 10px"><?php echo $empresa; ?><br>
+            <p class="company" style="line-height: 10px"><?php echo strtoupper($empresa); ?><br>
               <span class="lema" style="">Sucursal: <?php echo $puntoVenta; ?></span>
             </p>
             <p class="linespace-short"><strong><?php echo $direccion; ?></strong></p>
-            <p class="linespace-short">Cel (Whatsapp): <?php echo $celular; ?></p>
+            <p class="linespace-short">Celular: <?php echo $celular; ?> <img src="images/whatsapp.png" width="15" alt=""></p>
             <p class="linespace-short">Telf: <?php echo $telefono; ?></p>
-            <br>
             <div class="group">
             </div>
-            <p class="title">FACTURA</p>
-            <br>
+            <p class="title" style="font-size: 20px;">FACTURA</p>
+
             <div class="group">
 
             </div>
             <p class="title">NIT: <?php echo $nitEmpresa; ?></p>
-            <p class="title">Factura No: <?php echo $nroFactura; ?></p>
+            <p class="title" style="font-size: 20px;">Factura No: <?php echo $nroFactura; ?></p>
             <p class="title">Autorizacion No: <?php echo $nroAutorizacion; ?></p>
-            <br>
-            <p class="title"><?php echo "$fecha $hora"; ?></p>
+            <div class="group">
 
+            </div>
+            <p class="linespace-short"><?php echo $actividadEconomica; ?></p>
         </div>
 
         <div class="group">
           <div class="header">
+            <p class="title"><?php echo "$fecha $hora"; ?></p>
             <p class="linespace-short negrilla">Señor(es): <?php echo $razonSocial; ?></p>
-            <p class="linespace-short">NIT/CI Cliente: <?php echo $nit; ?></p>
+            <p class="linespace-short">NIT/CI Cliente: <?php echo $nitCliente; ?></p>
           </div>
         </div>
 
@@ -187,7 +204,7 @@ else {
                           <td colspan='5' align='right'>
                             Flete
                           </td>
-                          <td>
+                          <td align='center'>
                             $flete
                           </td>
                          </tr>";
@@ -195,8 +212,8 @@ else {
                            <td colspan='5' align='right'>
                              A Pagar
                            </td>
-                           <td>
-                             $pagar
+                           <td align='center'>
+                             $total
                            </td>
                           </tr>";
                 ?>
@@ -211,12 +228,18 @@ else {
 
             <p class="filaNegrilla">CODIGO DE CONTROL: <?php echo $codControl; ?></p>
             <p class="filaNegrilla">FECHA LIMITE DE EMISION: <?php echo $fechaLimite; ?></p>
-            <p >Usuario: <?php echo $usuario; ?></p>
-
-            <p class="center linespace-short"><strong>"ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAIS EL USO ILICITO DE ESTA SERA SANCIONADO DE ACUERDO A LA LEY"</strong></p>
-            <br>
-            <p class="center linespace-short"><strong>LEY No. 453 TIENES DERECHO A UN TRATO EQUITATIVO SIN DISCRIMINACION EN LA OFERTA DE PRODUCTOS.</strong></p>
-            <br>
+            <p >Usuario: <?php echo ucwords($usuario); ?></p>
+            <table border="0">
+              <tr>
+                <td>
+                  <div id="divQr" align="left" valign="middle" class="contenedor"></div>
+                </td>
+                <td>
+                  <strong>"ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAIS EL USO ILICITO DE ESTA SERA SANCIONADO DE ACUERDO A LA LEY"</strong>
+                </td>
+              </tr>
+            </table>
+            <p class="center linespace-short"><strong><?php echo strtoupper($leyendaConsumidor); ?></strong></p>
             <p align='center'>
               *** LA VIDA ES <span class="bella"> Bella </span> ***
             </p>
@@ -227,5 +250,17 @@ else {
 
 
     </div>
+
+
+  <script type="text/javascript">
+  var typeNumber = 8;
+  var errorCorrectionLevel = 'M';
+  var qr = qrcode(typeNumber, errorCorrectionLevel);
+  q="<?php echo $qr; ?>";
+  qr.addData(q);
+  qr.make();
+  // qr.cellSize("8");
+  document.getElementById('divQr').innerHTML = qr.createImgTag();
+  </script>
 </body>
 </html>

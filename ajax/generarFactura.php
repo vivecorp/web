@@ -18,7 +18,7 @@
     // existe
     $row=$result->fetch(PDO::FETCH_ASSOC);
 		$codUsuario=$row['codUsuario'];
-		$queryA="select asi.codAsignacion as codAsignacion, d.nit as nit, d.key as llave, d.nroAutorizacion as nroAutorizacion,
+		$queryA="select asi.codAsignacion as codAsignacion, d.nit as nit, d.llave as llave, d.nroAutorizacion as nroAutorizacion,
 										d.fechaLimite as fechaLimite, a.descripcion as actividadEconomica,
 										p.nombre as puntoVenta, p.direccion as direccion, p.celular as celular,
 										p.telefono as telefono, u.nombre as nombreUsuario
@@ -64,6 +64,7 @@
 				// generar factura y luego Imprimir
 				$total=$row['total'];
 				$dsctTotal=$row['descuento'];
+				$flete=$row['flete'];
 				$razonSocial=$row['razonSocial'];
 				$nitCliente=$row['nit'];
 				// Obtener ultimo numero de factura
@@ -85,6 +86,7 @@
 				// $total=51330;
 
 				$fechaFactura=date("Y/m/d");
+				$fechaQr=date("d/m/Y");
 				$code = $controlCode->generate($nroAutorizacion,//Numero de autorizacion
                                        $nroFactura,//Numero de factura
                                        $nitCliente,//Número de Identificación Tributaria o Carnet de Identidad
@@ -96,16 +98,20 @@
 				{
 					$dsctTotal=0;
 				}
-				$dsctMonto=round($total*($dsctTotal/100),2);
-				$qr="$nitEmpresa|$nroFactura|$nroAutorizacion|$fechaFactura|$total|$total|$code|$nitCliente|0|0|0|$dsctMonto";
+				$dsctMonto=round($dsctTotal,2);
+				$totalNeto=$total+$dsctMonto;
+				$qr="$nitEmpresa|$nroFactura|$nroAutorizacion|$fechaQr|$totalNeto|$total|$code|$nitCliente|0|0|0|$dsctMonto";
+				$f=date("Y-m-d");
+				$h=date("H:i:s");
 				$codFactura=obtenerUltimo("factura","codFactura");
 				$queryIF="insert into factura values($codFactura,
 																						$nroFactura,
-																						CURDATE(),
-			                                     current_time(),
+																						'$f',
+			                                     '$h',
 																					 '$razonSocial',
 																					 '$nitCliente',
 																					 $dsctTotal,
+																					 $flete,
 																					 $total,
 			                                     '$code',
 			                                     '$qr',

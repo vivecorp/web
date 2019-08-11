@@ -1,16 +1,15 @@
 <?php
   require_once "config.php";
 ?>
-<table class="table table-hover table-condensed table-bordered" id="dataTable">
+<table class="table table-hover table-condensed table-bordered" id="dataTable" style="font-size: 12px;">
   <thead>
-    <tr>
+    <tr valign="middle" class="btn-primary">
       <th>Articulo</th>
       <th>Descripcion</th>
       <th>C.Barra</th>
       <th>Foto</th>
       <th>U.Medida</th>
       <th>L.Empresa</th>
-      <th>A.Economica</th>
     </tr>
   </thead>
   <tbody>
@@ -33,7 +32,6 @@
               <td><img style='max-width: 60px ' class='img-fluid' src='productos/$row[4]' ></td>
               <td>$row[6]</td>
               <td><img style='max-width: 60px ' class='img-fluid' src='logos/$row[8]' ></td>
-              <td>$row[9]</td>
             </tr>";
     }
 

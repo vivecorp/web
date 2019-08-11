@@ -1674,6 +1674,8 @@ pre code {
   max-width: 100%;
   margin-bottom: 1rem;
   background-color: transparent;
+  /* cambio del tamaño de las letras de las tablas */
+  font-size: 11px;
 }
 
 .table th,
@@ -1683,8 +1685,12 @@ pre code {
   border-top: 1px solid #dee2e6;
 }
 
+/* cambiar el color de la cabecera de la tabla */
 .table thead th {
-  vertical-align: bottom;
+  vertical-align: middle;
+  color: #FFF;
+  background-color: #009688;
+
   border-bottom: 2px solid #dee2e6;
 }
 
@@ -13791,9 +13797,9 @@ be a descendant of the grid when it is being dragged.
   background-color: #222d32;
   -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
           box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
-  -webkit-transition: left 0.3s ease, width 0.3s ease;
-  -o-transition: left 0.3s ease, width 0.3s ease;
-  transition: left 0.3s ease, width 0.3s ease;
+  -webkit-transition: left 0.3s ease, width 0.3s ease;
+  -o-transition: left 0.3s ease, width 0.3s ease;
+  transition: left 0.3s ease, width 0.3s ease;
 }
 
 .app-sidebar::-webkit-scrollbar {
@@ -13868,11 +13874,12 @@ be a descendant of the grid when it is being dragged.
       -ms-flex-align: center;
           align-items: center;
   padding: 12px 15px;
-  font-size: 1.08em;
+  /* font-size: 1.08em; */
+  font-size: 1.00em;
   border-left: 3px solid transparent;
-  -webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
-  -o-transition: border-left-color 0.3s ease, background-color 0.3s ease;
-  transition: border-left-color 0.3s ease, background-color 0.3s ease;
+  -webkit-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+  -o-transition: border-left-color 0.3s ease, background-color 0.3s ease;
+  transition: border-left-color 0.3s ease, background-color 0.3s ease;
   color: #fff;
 }
 
@@ -14153,11 +14160,11 @@ be a descendant of the grid when it is being dragged.
 .tile {
   position: relative;
   background: #ffffff;
-  border-radius: 3px;
-  padding: 20px;
+  border-radius: 5px;
+  padding: 15px;
   -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
           box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   -webkit-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;

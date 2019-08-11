@@ -25,7 +25,9 @@
       if($rowP=$buscarP->fetch(PDO::FETCH_NUM))
       {
         $pagado=$rowP[0];
+        $pagado=round($pagado,2);
         $pendiente=$row[2]-$pagado;
+        $pendiente=round($pendiente,2);
       }
       echo "<tr >
               <td>$row[0]</td>
@@ -49,7 +51,7 @@ $(document).ready(function(){
     searching: false,
     info: false,
     paging: false,
-    scrollY: 210,
+    scrollY: 215,
     "scrollX": true,
     "language": {
       "lengthMenu": "Mostrar _MENU_ Registros por Pagina",

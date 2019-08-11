@@ -27,20 +27,19 @@
     $buscarU=$con->query($query);
     while($row=$buscarU->fetch(PDO::FETCH_NUM))
     {
+      $ae=substr($row[9], 0, 25).'...';
       echo "<tr>
               <td>$row[1]</td>
               <td>$row[2]</td>
               <td>$row[3]</td>
-              <td><img style='max-width: 80px ' class='img-fluid' src='productos/$row[4]' ></td>
+              <td><img style='max-width: 50px ' class='img-fluid' src='productos/$row[4]' ></td>
               <td>$row[6]</td>
-              <td><img style='max-width: 80px ' class='img-fluid' src='logos/$row[8]' ></td>
-              <td>$row[9]</td>
+              <td><img style='max-width: 50px ' class='img-fluid' src='logos/$row[8]' ></td>
+              <td><a href='#' title='$row[9]'>$ae</a></td>
               <td style='text-align: center;'>
-                <span class='btn btn-warning btn-sm' data-toggle='modal' data-target=''#modalEditar' onclick='llenarDatos( $row[0] )'>
-                  <span class='fa fa-pencil' aria-hidden='true'></span>
+                <span class='btn btn-warning btn-sm fa fa-pencil' data-toggle='modal' data-target='#modalEditar' onclick='llenarDatos( $row[0] )'>
                 </span>
-                <span class='btn btn-danger btn-sm' onclick='borrar( $row[0] )'>
-                  <span class='fa fa fa-trash' aria-hidden='true'></span>
+                <span class='btn btn-danger btn-sm fa fa-trash' onclick='borrar( $row[0] )'>
                 </span>
               </td>
             </tr>";
@@ -55,6 +54,7 @@
   $(document).ready(function(){
     $('#dataTable').DataTable( {
       responsive: true,
+      "pageLength": 100,
       "scrollX": true,
       "language": {
         "lengthMenu": "Mostrar _MENU_ Registros por Pagina",

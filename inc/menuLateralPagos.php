@@ -28,5 +28,6 @@ if($result->rowCount() == 1){
     <li><a class="app-menu__item" href="pagosRealizados.php"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Pagos Realizados</span></a></li>
     <li><a class="app-menu__item" href="bancos.php"><i class="app-menu__icon fa fa-balance-scale"></i><span class="app-menu__label">Bancos</span></a></li>
     <li><a class="app-menu__item" href="tiposPago.php"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Tipos de Pago</span></a></li>
+    <li><a class="app-menu__item" href="index.php"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">Salir</span></a></li>
   </ul>
 </aside>

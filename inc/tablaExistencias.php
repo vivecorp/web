@@ -38,8 +38,7 @@
               <td>$row[7]</td>
               <td><a class='btn' href='javascript:verAlmacen($row[2],$row[0]);' id='linkCantidad' role='button'>$row[0]</a></td>
               <td style='text-align: center;'>
-                <span class='btn btn-success btn-sm' onclick='ver( $row[1])'>
-                  <span class='fa fa fa-search' aria-hidden='true'></span>
+                <span class='btn btn-success btn-sm fa fa-search' onclick='ver( $row[1])'>
                 </span>
               </td>
             </tr>";
@@ -57,7 +56,7 @@ $(document).ready(function(){
     searching: true,
     info: true,
     paging: true,
-    scrollY: 110,
+    scrollY: 300,
     "scrollX": true,
     "language": {
       "lengthMe nu": "Mostrar _MENU_ Registros por Pagina",

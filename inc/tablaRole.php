@@ -20,11 +20,9 @@
               <td>$row[0]</td>
               <td>$row[1]</td>
               <td style='text-align: center;'>
-                <span class='btn btn-warning btn-sm' data-toggle='modal' data-target=''#modalEditarRole' onclick='llenarDatos( $row[0] )'>
-                  <span class='fa fa-pencil-square-o'></span>
+                <span class='btn btn-warning btn-sm fa fa-pencil' data-toggle='modal' data-target=''#modalEditarRole' onclick='llenarDatos( $row[0] )'>
                 </span>
-                <span class='btn btn-danger btn-sm' onclick='borrarRole( $row[0] )'>
-                  <span class='fa fa fa-trash'></span>
+                <span class='btn btn-danger btn-sm fa fa-trash' onclick='borrarRole( $row[0] )'>
                 </span>
               </td>
             </tr>";

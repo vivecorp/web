@@ -5,12 +5,11 @@
 ?>
 <table class="table table-hover table-condensed table-bordered" id="dataTable" style="font-size: 12px;">
   <thead>
-    <tr valign="middle">
+    <tr valign="middle" class="btn-primary" >
       <th>Art.</th>
       <th>Producto</th>
       <th>C.Barra</th>
       <th>Foto</th>
-      <th>Unidad</th>
       <th>Precio</th>
       <th>Cant. Almacen</th>
       <th>Cant. Total</th>
@@ -75,12 +74,11 @@
         $param="alertaPrecioVenta()";
       }
 
-      echo "<tr id='filaProducto$row[0]' ondblclick='$param'>
+      echo "<tr id='filaProducto$row[0]' ondblclick='$param' style='cursor:pointer;'>
               <td>$row[1]</td>
-              <td>$row[2]</td>
+              <td>$row[2] <strong>($row[6])</strong></td>
               <td>$row[3]</td>
               <td><img style='max-width: 40px ' class='img-fluid' src='productos/$row[4]' ></td>
-              <td>$row[6]</td>
               <td>$precioVenta</td>
               <td>$cantidadOC</td>
               <td><a class='btn' href='javascript:verAlmacen($row[0],$cantidadOT);' id='linkCantidad' role='button'>$cantidadOT</a></td>
@@ -107,7 +105,14 @@
         "infoEmpty": "Sin Registros Disponibles",
         "search": "Buscar",
         "infoFiltered": "(filtered from _MAX_ total records)"
-      }
+      },
+      "columnDefs": [
+                      {
+                          "targets": [ 2 ],
+                          "visible": false,
+                          "searchable": true
+                      }
+                    ]
     });
   });
 </script>

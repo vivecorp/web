@@ -40,7 +40,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="tile">
+        <div class="tile" style="height:95%;">
           <h3 class="tile-title">Datos de Compra</h3>
 
           <div class="tile-body">
@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="tile">
+        <div class="tile" style="height:95%;">
           <h3 class="tile-title">Productos</h3>
           <div class="tile-body">
             <!-- div donde se cargara el data table -->
@@ -136,10 +136,10 @@
     function detalleCompras(cod,articulo,descripcion,foto,unidad)
     {
       co="<input type='hidden' id='hdeP' name='hdeP[]' value='"+cod+"' >"
-      c="<input type='number' onkeyup='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' name='txtC[]'>";
-      p="<input type='number' onkeyup='calcular("+cod+")' required step='any' class='form-control' id='txtP"+cod+"' name='txtP[]'>";
-      d="<input type='number' onkeyup='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' required value='0'>";
-      s="<input type='number' readonly class='form-control' id='txtS"+cod+"' name='txtS[]' >";
+      c="<input type='number' onkeyup='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' min='0' style='width: 70px;' name='txtC[]'>";
+      p="<input type='number' onkeyup='calcular("+cod+")' required step='any' class='form-control' id='txtP"+cod+"' min='0' style='width: 70px;' name='txtP[]'>";
+      d="<input type='number' onkeyup='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' min='0' style='width: 60px;' required value='0'>";
+      s="<input type='number' readonly class='form-control' id='txtS"+cod+"' name='txtS[]' min='0' style='width: 80px;' >";
       b="<span class='btn btn-danger btn-sm' onclick='borrarFila("+cod+")'><span class='fa fa fa-trash'></span></span>";
       fila="<tr id='fila"+cod+"'><td>"+cod+co+"</td><td>"+articulo+"</td><td>"+descripcion+"</td><td><img style='max-width: 60px ' class='img-fluid' src='productos/"+foto+"' ></td><td>"+unidad+"</td><td>"+c+"</td><td>"+p+"</td><td>"+d+"</td><td>"+s+"</td><td>"+b+"</td></tr>";
       $('#filaProducto'+cod).hide();
@@ -148,7 +148,7 @@
       if(band==0)
       {
         band=1;
-        filaTotal="<tfoot><tr id='filaTotal'><td colspan='8' align='right'>Total</td><td><input type='number' readonly class='form-control' id='txtTotal' value='0' required name='txtTotal'></td></tr></tfoot>";
+        filaTotal="<tfoot><tr id='filaTotal'><td colspan='2' align='right'>Total</td><td><input type='number' readonly class='form-control' id='txtTotal' value='0' required name='txtTotal' min='0' style='width: 80px;'></td></tr></tfoot>";
         $('#dataTableDetalle').append(filaTotal);
       }
       cont++;

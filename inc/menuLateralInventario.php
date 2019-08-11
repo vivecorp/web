@@ -27,5 +27,6 @@ if($result->rowCount() == 1){
     <li><a class="app-menu__item" href="ingresoMaterial.php"><i class="app-menu__icon fa fa-cart-plus"></i><span class="app-menu__label">Recepciones Pendientes</span></a></li>
     <li><a class="app-menu__item" href="existencias.php"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Existencias</span></a></li>
     <li><a class="app-menu__item" href="movimientoInventario.php"><i class="app-menu__icon fa fa-balance-scale"></i><span class="app-menu__label">Movimento de Inventario</span></a></li>
+    <li><a class="app-menu__item" href="index.php"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">Salir</span></a></li>
   </ul>
 </aside>

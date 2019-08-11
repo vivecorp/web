@@ -1,5 +1,23 @@
-<header class="app-header"><a class="app-header__logo" href="index.html">Vivecorp</a>
-  <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+<?php
+require_once "inc/config.php";
+// Obtener datos de la empresa
+$queryOE="select * from parametros";
+$resultOE=$con->query($queryOE);
+if($resultOE->rowCount() == 1){
+  // existe
+  $rowOE=$resultOE->fetch(PDO::FETCH_ASSOC);
+  $empresa=$rowOE['empresa'];
+  $sigla=$rowOE['sigla'];
+  $logo=$rowOE['logo'];
+  $logo="images/".$logo;
+}else{
+  echo "No se encontro ningun parametro";
+  return false;
+}
+?>
+<header class="app-header"><a class="app-header__logo" href="gerenteConsole.php"><?php echo $sigla; ?></a>
+  <!-- Sidebar toggle button-->
+  <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
   <!-- Navbar Right Menu-->
   <ul class="app-nav">
     <li class="app-search">
@@ -50,9 +68,8 @@
     <!-- User Menu-->
     <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
       <ul class="dropdown-menu settings-menu dropdown-menu-right">
-        <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-        <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
-        <li><a class="dropdown-item" href="page-login.html"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+        <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-user fa-lg"></i> Perfil</a></li>
+        <li><a class="dropdown-item" href="index.php"><i class="fa fa-sign-out fa-lg"></i> Salir</a></li>
       </ul>
     </li>
   </ul>

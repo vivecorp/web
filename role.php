@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if(!$_SESSION['codUsuarioG'] || $_SESSION['roleG']!=1)
+  if($_SESSION['roleG']!=0)
   {
   	header("location: login.php");
   }

@@ -34,11 +34,9 @@
               <td>$row[7]</td>
               <td>$row[8]</td>
               <td style='text-align: center;'>
-                <span class='btn btn-warning btn-sm' data-toggle='modal' data-target=''#modalEditar' onclick='llenarDatos( $row[0] )'>
-                  <span class='fa fa-pencil'></span>
+                <span class='btn btn-warning btn-sm fa fa-pencil' data-toggle='modal' data-target=''#modalEditar' onclick='llenarDatos( $row[0] )'>
                 </span>
-                <span class='btn btn-danger btn-sm' onclick='borrar( $row[0] )'>
-                  <span class='fa fa fa-trash'></span>
+                <span class='btn btn-danger btn-sm fa fa-trash' onclick='borrar( $row[0] )'>
                 </span>
               </td>
             </tr>";

@@ -20,12 +20,15 @@
   <div id="loading-screen" >
     <img src="images/spinning-circles.svg" >
   </div>
+  <div id="loading_oculto">
+    <img src="images/spinning-circles.svg" >
+  </div>
   <!-- Navbar-->
   <!-- Navbar Logo, Barra superior donde se tiene las notificaciones el buscador el boton de menu etc-->
   <?php require "inc/navbar.php"; ?>
   <!-- nav bar final -->
   <!-- Sidebar menu lateral -->
-  <?php require "inc/menuLateralProductos.php"; ?>
+  <?php require "inc/menuLateralVentas.php"; ?>
   <!-- menu lateral fin -->
   <!-- contenido inicio -->
   <main class="app-content">
@@ -44,7 +47,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <div class="tile">
+        <div class="tile" style="height:95%;">
           <h3 class="tile-title">Datos de Venta</h3>
 
           <div class="tile-body">
@@ -76,7 +79,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="tile">
+        <div class="tile" style="height:95%;">
           <h3 class="tile-title"><div id="divAlmacen"></div></h3>
           <div class="tile-body">
             <!-- div donde se cargara el data table -->
@@ -102,6 +105,11 @@
       <div class="col-md-12">
         <div class="tile">
           <div class="tile-body">
+            <div class="toggle" align="center">
+              <span align="center" class="btn-primary">Flete (Bs)</span>
+              <input type="number" step="any" class="form-control"   id="txtFlete" name="txtFlete" value="0" size="10" maxlength="10" style='width: 70px;' >
+            </div>
+            <br>
             <p align='center'><button type="button" class="btn btn-primary" id="btnRegistrar">Registrar</button></p>
           </div>
         </div>
@@ -119,7 +127,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <h1 style="width: 100%; text-align: center;"><div id="divTotalCancelar"  ></div></h1>
+            <h1 style="width: 100%; text-align: center;" class="btn-primary"><div id="divTotalCancelar"  ></div></h1>
             <br>
             <label>Tipo de Pago</label>
             <?php echo obtenerCombo('tipopago','codTipoPago','tipoPago'); ?>
@@ -243,7 +251,13 @@
   <script type="text/javascript">
     $('#cmbcliente').select2();
     $(document).ready(function(){
+      // submit del formulario principal
+      $("#wfrNuevo").on("submit", function(event){
+        event.preventDefault();
 
+        document.getElementById('loading_oculto').style.visibility='visible';
+        $( "#wfrNuevo" )[0].submit();
+      });
       // nuevo Cliente
       $("#wfrNuevoCliente").on("submit", function(event){
         event.preventDefault();
@@ -273,17 +287,9 @@
               $('#txtPlazo').val(datos['plazo']);
               $('#hdeDescuento').val(datos['descuento']);
               $('#modalNuevoCliente').modal('hide');
-              swal({
-                title: "Nuevo Cliente",
-                text: "Registro Exitoso!",
-                icon: "success"
-              });
+              swal("Nuevo Cliente","Registro Exitoso!","success");
             }else{
-              swal({
-                title: "Nuevo Cliente Error",
-                text: r,
-                icon: "error"
-              });
+              swal("Nuevo Cliente Error",r,"error");
             }
           });
       });
@@ -362,6 +368,8 @@
       $('#divDataDetalle').load('inc/tablaDetalleVentas.php');
 
 
+
+
       $(document).on('click', '#btnRegistrar', function(event) {
       // $( "#wfrNuevo" ).submit(function( event ) {
         // event.preventDefault();
@@ -379,8 +387,11 @@
           });
           if(aux==0)
           {
-            $('#divTotalCancelar').text("TOTAL (Bs): "+$('#txtTotal').val());
-            $('#txtPagoEfectivo').val($('#txtTotal').val());
+            t=parseFloat($('#txtTotal').val());
+            f=parseFloat($('#txtFlete').val());
+            tf=t+f;
+            $('#divTotalCancelar').text("TOTAL (Bs): "+tf);
+            $('#txtPagoEfectivo').val(tf);
             $('#txtCambio').val(0);
 
             // ocultar los campos del modal
@@ -509,10 +520,10 @@
       descC=$("#hdeDescuento").val();
       co="<input type='hidden' id='hdeP' name='hdeP[]' value='"+cod+"' >"
       cantidadAlmacen="<input type='hidden' id='hdeCA"+cod+"' name='hdeCA[]' value='"+cantidadD+"' >"
-      c="<input type='number' oninput='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' name='txtC[]'>";
-      p="<input type='number' onkeyup='calcular("+cod+")' required step='any' class='form-control' id='txtP"+cod+"' name='txtP[]' value='"+precioV+"' readonly>";
-      d="<input type='number' oninput='calcular("+cod+")'  class='form-control' id='txtD"+cod+"' name='txtD[]' value='"+descC+"'>";
-      s="<input type='number' readonly class='form-control' id='txtS"+cod+"' name='txtS[]' >";
+      c="<input type='number' oninput='calcular("+cod+")' required  class='form-control' id='txtC"+cod+"' name='txtC[]' value='1' style='width: 70px;'>";
+      p="<input type='number' onkeyup='calcular("+cod+")' required step='any' class='form-control' id='txtP"+cod+"' name='txtP[]' value='"+precioV+"' readonly style='width: 70px;'>";
+      d="<input type='number' oninput='calcular("+cod+")'  class='form-control' step='any' id='txtD"+cod+"' name='txtD[]' value='"+descC+"' style='width: 70px;'>";
+      s="<input type='number' readonly class='form-control' id='txtS"+cod+"' name='txtS[]' style='width: 70px;'>";
       b="<span class='btn btn-danger btn-sm fa fa fa-trash' onclick='borrarFila("+cod+")'></span>";
       fila="<tr id='fila"+cod+"'><td>"+cod+co+"</td><td>"+cantidadD+cantidadAlmacen+"</td><td>"+articulo+"</td><td>"+descripcion+"</td><td><img style='max-width: 40px ' class='img-fluid' src='productos/"+foto+"' ></td><td>"+unidad+"</td><td>"+c+"</td><td>"+p+"</td><td>"+d+"</td><td>"+s+"</td><td>"+b+"</td></tr>";
       $('#filaProducto'+cod).hide();
@@ -521,10 +532,11 @@
       if(band==0)
       {
         band=1;
-        filaTotal="<tfoot><tr id='filaTotal'><td colspan='9' align='right'>Total</td><td><input type='number' readonly class='form-control' id='txtTotal' value='0' required name='txtTotal'><input type='number' readonly class='form-control' id='txtDsctTotal' value='0'  name='txtDsctTotal'></td></tr></tfoot>";
+        filaTotal="<tfoot><tr id='filaTotal'><td align='right' colspan='3'>Total Descuento (Bs)</td><td><input type='number' readonly class='form-control' id='txtDsctTotal' value='0'  name='txtDsctTotal'></td></tr><tr id='filaTotal'><td colspan='3' align='right'>Total (Bs)</td><td><input type='number' readonly class='form-control' id='txtTotal' value='0' required name='txtTotal'></td></tr></tfoot>";
         $('#dataTableDetalle').append(filaTotal);
       }
       cont++;
+      calcular(cod);
     }
     function calcular(cod)
     {
@@ -576,13 +588,15 @@
           su=su + subtotal;
           // calcular descuento promedio
           d=parseFloat($('#txtD'+co).val());
+          p=parseFloat($('#txtP'+co).val());
+          c=parseFloat($('#txtC'+co).val());
           if(isNaN(d)==true)
           {
             d=0;
           }
-          dsct=(dsct + d);
+          ds=(p*c)*(d/100);
+          dsct=(dsct + ds);
         });
-        dsct=dsct/cont;
         $('#txtTotal').val(su);
         $('#txtDsctTotal').val(dsct);
       }
@@ -691,8 +705,12 @@
     function calcularCambio()
     {
       pa=$('#txtPagoEfectivo').val();
-      tot=$('#txtTotal').val();
+      tot=parseFloat($('#txtTotal').val());
+      flete=parseFloat($('#txtFlete').val());
+      tot=tot+flete;
       cambio=pa - tot;
+      // alert(flete);
+      // alert(tot);
       $('#txtCambio').val(cambio);
     }
 

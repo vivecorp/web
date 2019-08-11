@@ -39,6 +39,14 @@
       </ul>
     </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="bs-component" id="divAlerta">
+
+        </div>
+      </div>
+    </div>
+
     <div class="page-error tile">
       <div class="modal-dialog">
 				<div class="modal-content">
@@ -54,7 +62,7 @@
              ?>
 					  <p>Impresion de los Registros</p>
             <p>Imprimir Nota de Venta <button type="button" class="btn btn-primary" onClick="imprimir()">Imprimir</button></p>
-            <p>Imprimir Factura <button type="button" class="btn btn-primary" onClick="imprimirFactura()">Imprimir</button></p>
+            <p>Imprimir Factura <button type="button" id="btnFactura" class="btn btn-primary" onClick="imprimirFactura()">Imprimir</button></p>
 				  </div>
 				  <div class="modal-footer">
 					  <button type="button" class="btn btn-default" data-dismiss="modal" onClick="volver()">Volver</button>
@@ -85,6 +93,37 @@
   <script type="text/javascript">
     $(document).ready(function(){
       // loader Inicio
+      // obtener alertas
+      cod="<?php echo $codUsuarioG; ?>";
+
+      $.ajax({
+        type:"POST",
+        data:"cod=" + cod,
+        url:"ajax/obtenAlertas.php",
+        success:function(r){
+          datos=jQuery.parseJSON(r);
+          // $('#lblUsuario').text(datos['nombre']+ "(" + datos['usuario'] + ")" );
+          // $('#cmbDosificacionA').val(datos['codDosificacion']);
+          // $('#cmbSucursalA').val(datos['codPuntoVenta']);
+          // alert(datos['fechaLimite']);
+          // alert(datos['actual']);
+          // alert(datos['diferencia']);
+          // alert(datos['invert']);
+
+          tipoMsg=datos['tipoMsg'];
+          msg="<div class='alert alert-dismissible alert-"+tipoMsg+"'><button class='close' type='button' data-dismiss='alert'>×</button><h4>Alerta!</h4><p>"+datos['mensaje']+"</p></div>";
+          if (datos['mostrar']==1) {
+            $('#divAlerta').html(msg);
+            if(tipoMsg=='danger')
+            {
+              $('#btnFactura').prop("disabled", true);
+            }
+
+
+          }
+
+        }
+      });
     });
   </script>
   <script type="text/javascript">
@@ -120,18 +159,6 @@
           }else {
             swal("Impresion",datos['codFactura'],"error");
           }
-
-
-
-          // if(typeof datos['codFactura'] == "string" )
-          // {
-          //   alert(datos['codFactura']);
-          //
-          // }
-          // else {
-          //   alert("es entero " + datos['codFactura']);
-          //
-          // }
 
         }).fail( function(r) {
 

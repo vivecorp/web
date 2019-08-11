@@ -50,11 +50,9 @@
               <td>$ingresado</td>
               <td>$pendiente</td>
               <td style='text-align: center;'>
-                <span class='btn btn-primary btn-sm' data-toggle='modal' data-target='#modalNuevo' onclick='nuevoIngreso($row[1],$pendiente,\"$row[7]\",\"$row[4]\",\"$row[5]\",$row[9])'>
-                  <span class='fa fa-plus-circle' aria-hidden='true'></span>
+                <span class='btn btn-primary btn-sm fa fa-plus-circle' data-toggle='modal' data-target='#modalNuevo' onclick='nuevoIngreso($row[1],$pendiente,\"$row[7]\",\"$row[4]\",\"$row[5]\",$row[9])'>
                 </span>
-                <span class='btn btn-success btn-sm' onclick='ver( $row[1])'>
-                  <span class='fa fa fa-search' aria-hidden='true'></span>
+                <span class='btn btn-success btn-sm fa fa-search' onclick='ver( $row[1])'>
                 </span>
               </td>
             </tr>";
@@ -70,6 +68,7 @@ $(document).ready(function(){
   $('#dataTable').DataTable( {
     responsive: true,
     searching: true,
+    "pageLength": 100,
     info: true,
     paging: true,
     scrollY: 410,

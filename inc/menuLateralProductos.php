@@ -25,8 +25,8 @@ if($result->rowCount() == 1){
   <ul class="app-menu">
     <li><a class="app-menu__item active" href="gerenteConsole.php"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
     <li><a class="app-menu__item" href="producto.php"><i class="app-menu__icon fa fa-cart-plus"></i><span class="app-menu__label">Productos</span></a></li>
-    <li><a class="app-menu__item" href="lineaEmpresa.php"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Lineas Empresarial</span></a></li>
+    <li><a class="app-menu__item" href="precioVenta.php"><i class="app-menu__icon fa fa-usd"></i><span class="app-menu__label">Precio de Venta</span></a></li>
     <li><a class="app-menu__item" href="unidadMedida.php"><i class="app-menu__icon fa fa-balance-scale"></i><span class="app-menu__label">Unidad de Medida</span></a></li>
-    <li><a class="app-menu__item" href="actividadEconomica.php"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Actividad Economica</span></a></li>
+    <li><a class="app-menu__item" href="index.php"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">Salir</span></a></li>
   </ul>
 </aside>

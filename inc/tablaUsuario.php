@@ -12,6 +12,7 @@
       <th>Usuario</th>
       <th>Fecha Nacimiento</th>
       <th>Cargo</th>
+      <th>Foto</th>
       <th>Opciones</th>
     </tr>
   </thead>
@@ -25,7 +26,8 @@
                    u.direccion,
                    u.usuario,
                    date_format(u.fechaNacimiento,'%d/%m/%Y'),
-                   r.role
+                   r.role,
+                   u.foto
                    from usuario u, role r
                    where u.codRole=r.codRole";
     // $result=mysql_query($query);
@@ -41,13 +43,12 @@
               <td>$row[5]</td>
               <td>$row[6]</td>
               <td>$row[7]</td>
-              <td style='text-align: center;'><span class='btn btn-warning btn-sm' data-toggle='modal' data-target=''#modalEditarUsuario' onclick='llenarDatos( $row[0] )'>
-                    <span class='fa fa-pencil-square-o'></span>
-                  </span>
-                  <span class='btn btn-danger btn-sm' onclick='borrarUsuario( $row[0] )'>
-                          <span class='fa fa fa-trash'></span>
-                  </span>
-
+              <td><img style='max-width: 40px ' class='img-fluid' src='foto/$row[8]' ></td>
+              <td style='text-align: center;'>
+                <span class='btn btn-warning btn-sm fa fa-pencil-square-o' data-toggle='modal' data-target=''#modalEditarUsuario' onclick='llenarDatos( $row[0] )'>
+                </span>
+                <span class='btn btn-danger btn-sm fa fa-trash' onclick='borrarUsuario( $row[0] )'>
+                </span>
               </td>
             </tr>";
     }

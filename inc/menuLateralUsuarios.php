@@ -23,8 +23,13 @@ if($result->rowCount() == 1){
     </div>
   </div>
   <ul class="app-menu">
-    <li><a class="app-menu__item active" href="gerenteConsole.php"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+    <li><a class="app-menu__item active" href="configConsole.php"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span></a></li>
+    <li><a class="app-menu__item" href="parametrosUsuario.php"><i class="app-menu__icon fa fa-user-secret"></i><span class="app-menu__label">Parametros Usuarios</span></a></li>
     <li><a class="app-menu__item" href="usuario.php"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Usuarios</span></a></li>
     <li><a class="app-menu__item" href="role.php"><i class="app-menu__icon fa fa-address-card"></i><span class="app-menu__label">Roles</span></a></li>
+    <li><a class="app-menu__item" href="lineaEmpresa.php"><i class="app-menu__icon fa fa-list"></i><span class="app-menu__label">Lineas Empresarial</span></a></li>
+    <li><a class="app-menu__item" href="almacen.php"><i class="app-menu__icon fa fa-archive"></i><span class="app-menu__label">Almacenes</span></a></li>
+    <li><a class="app-menu__item" href="index.php"><i class="app-menu__icon fa fa-sign-out"></i><span class="app-menu__label">Salir</span></a></li>
+
   </ul>
 </aside>

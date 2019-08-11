@@ -7,6 +7,7 @@
       <th>Cod</th>
       <th>Codigo</th>
       <th>Actividad Economica</th>
+      <th>Abreviatura</th>
       <th>Opciones</th>
     </tr>
   </thead>
@@ -20,12 +21,11 @@
               <td>$row[0]</td>
               <td>$row[1]</td>
               <td>$row[2]</td>
+              <td>$row[3]</td>
               <td style='text-align: center;'>
-                <span class='btn btn-warning btn-sm' data-toggle='modal' data-target=''#modalEditar' onclick='llenarDatos( $row[0] )'>
-                  <span class='fa fa-pencil' aria-hidden='true'></span>
+                <span class='btn btn-warning btn-sm fa fa-pencil' data-toggle='modal' data-target=''#modalEditar' onclick='llenarDatos( $row[0] )'>
                 </span>
-                <span class='btn btn-danger btn-sm' onclick='borrar( $row[0] )'>
-                  <span class='fa fa fa-trash' aria-hidden='true'></span>
+                <span class='btn btn-danger btn-sm fa fa-trash' onclick='borrar( $row[0] )'>
                 </span>
               </td>
             </tr>";

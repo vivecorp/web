@@ -36,11 +36,9 @@
               <td>$pagado</td>
               <td>$pendiente</td>
               <td style='text-align: center;'>
-                <span class='btn btn-primary btn-sm' data-toggle='modal' data-target=''#modalNuevo' onclick='nuevoPago( $row[0], $pendiente )'>
-                  <span class='fa fa-plus-circle' aria-hidden='true'></span>
+                <span class='btn btn-primary btn-sm fa fa-plus-circle' data-toggle='modal' data-target=''#modalNuevo' onclick='nuevoPago( $row[0], $pendiente )'>
                 </span>
-                <span class='btn btn-success btn-sm' onclick='ver( $row[0])'>
-                  <span class='fa fa fa-search' aria-hidden='true'></span>
+                <span class='btn btn-success btn-sm fa fa-search' onclick='ver( $row[0])'>
                 </span>
               </td>
             </tr>";
@@ -58,6 +56,7 @@ $(document).ready(function(){
     searching: true,
     info: true,
     paging: true,
+    "pageLength": 100,
     scrollY: 410,
     "scrollX": true,
     "language": {

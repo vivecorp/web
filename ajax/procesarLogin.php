@@ -23,6 +23,9 @@
     if($role == 1){
       $arrayDevolver['redirect']='gerenteConsole.php';
     }
+    if($role == 0){
+      $arrayDevolver['redirect']='configConsole.php';
+    }
   }else{
     $arrayDevolver['error']="Usuario o Password Incorrecto";
   }

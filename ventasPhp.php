@@ -9,10 +9,14 @@
 
   $codUsuario=$_SESSION['codUsuarioG'];
   // recibir datos post
-  $codVentas=$_POST['txtCodVentas'];
-  $fecha=$_POST['txtFecha'];
+  $codVentas=obtenerUltimo('ventas','codVentas');
+  // $fecha=$_POST['txtFecha'];
+  $fecha=date("Y-m-d H:i:s");
   $total=$_POST['txtTotal'];
+
   $dsctTotal=$_POST['txtDsctTotal'];
+  $flete=$_POST['txtFlete'];
+  $total=$total+$flete;
   $codCliente=$_POST['cmbcliente'];
   $razonSocial=$_POST['txtRazonSocial'];
   $nit=$_POST['txtNit'];
@@ -33,6 +37,7 @@
                                      '$fecha',
                                      $total,
                                      $dsctTotal,
+                                     $flete,
                                      $codCliente,
                                      '$razonSocial',
                                      '$nit',
@@ -107,7 +112,7 @@ header("location: areaImpresionVenta.php?codVentas=$codVentas");
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="fa fa-user"></i> Orden de Compra</h1>
+        <h1><i class="fa fa-user"></i> Orden de Venta</h1>
         <p>Impresion de Orden de Compra</p>
       </div>
       <ul class="app-breadcrumb breadcrumb side">

@@ -159,25 +159,17 @@
               $('#wfrNuevo')[0].reset();
               $('#divDataTable').load('inc/tablaProveedor.php');
               $('#modalNuevo').modal('hide');
-              swal({
-                title: "Nuevo Proveedor",
-                text: "Registro Exitoso!",
-                icon: "success"
-              });
+              swal("Nuevo Proveedor","Registro Exitoso!","success");
             }else{
-              swal({
-                title: "Nuevo Proveedor",
-                text: "Error en Registrar!",
-                icon: "error"
-              });
+              swal("Nuevo Proveedor","Error en Registrar!","error");
 
             }
           }
         });
        });
 
-       //ajax actualizar
-       $(document).on("submit","#wfrActualizar",function(event){
+      //ajax actualizar
+      $(document).on("submit","#wfrActualizar",function(event){
         event.preventDefault();
         datos=$('#wfrActualizar').serialize();
         $.ajax({
@@ -187,25 +179,15 @@
           success:function(r){
             if(r==1){
               $('#modalEditar').modal('hide');
-              swal({
-                title: "Actualizar Proveedor",
-                text: "Registro Exitoso!",
-                icon: "success"
-              });
+              swal("Actualizar Proveedor","Registro Exitoso!","success");
               $('#divDataTable').load('inc/tablaProveedor.php');
             }else{
-              swal({
-                 title: "Actualizar Proveedor",
-                 text: "Error en Registrar!",
-                 icon: "error"
-              });
+              swal("Actualizar Proveedor","Error en Registrar!","error");
             }
           }
         });
-        });
-
-
       });
+    });
   </script>
   <script type="text/javascript">
     // funcion borrar
